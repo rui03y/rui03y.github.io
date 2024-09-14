@@ -27,16 +27,17 @@
         }
         .image-container img {
             width: 50%;
-            height: 50%;
+            height: auto;
         }
-        input[type="text"] {
+        input[type="text"], .output-box {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
             box-sizing: border-box;
-            height: auto; /* 高度自适应 */
-            min-height: 50px; /* 设置最小高度 */
-            background-color: white; /* 设置背景颜色为白色 */
+            height: auto;
+            min-height: 50px;
+            background-color: white;
+            border: 1px solid #dee2e6;
         }
         button {
             padding: 10px 20px;
@@ -48,7 +49,7 @@
             flex: 1;
         }
         button:hover {
-            background-color:  #c82333;
+            background-color: #c82333;
         }
         .result {
             margin-top: 20px;
@@ -56,8 +57,8 @@
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
             word-break: break-all;
-            height: auto; /* 高度自适应 */
-            min-height: 50px; /* 设置最小高度 */
+            height: auto;
+            min-height: 50px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -69,19 +70,25 @@
         .button-group button {
             margin-right: 10px;
         }
-        .copy-button {
-            background-color: #dc3545; /* 红色 */
+        .buttonen {
+            background-color: #1E90FF;
         }
-        .copy-button:hover {
+        .buttonen:hover {
+            background-color: #4169e1;
+        }
+        .buttonun {
+            background-color: #dc3545;
+        }
+        .buttonun:hover {
             background-color: #c82333;
         }
         .grey-background {
-            background-color: #e9ecef; /* 灰色背景 */
+            background-color: #e9ecef;
         }
-        .grey-copy-button {
-            background-color: #6c757d; /* 灰色 */
+        .copy-button {
+            background-color: #6c757d;
         }
-        .grey-copy-button:hover {
+        .copy-button:hover {
             background-color: #5a6268;
         }
         .description {
@@ -92,7 +99,7 @@
         .preview-container {
             margin-top: 20px;
             width: 100%;
-            height: 400px; /* 设置预览区域的高度 */
+            height: 400px;
             border: 1px solid #dee2e6;
         }
         .preview-container iframe {
@@ -100,27 +107,30 @@
             height: 100%;
             border: none;
         }
+        .output-box {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-        <h1>广告组Deeplink生成器</h1>
+    <h1>广告组Deeplink生成器</h1>
     <div class="container">
         <div class="image-container">
             <img src="dwqyyht.gif" alt="等我再加载会...">
         </div>
-        <input type="text" id="url-input" placeholder="输入运营后台http开头的网址">
-        <button onclick="encodeURL()">Encode URL</button>
-        <div id="encoded-url" class="result"></div>
+        <input type="text" id="url-input" placeholder="bigolive://web?url=或者运营后台链接">
         <div class="button-group">
-            <button id="copy-encoded-url" class="copy-button" onclick="copyToClipboard('encoded-url')">Copy bigolive://web?url=开头的</button>
-            <button id="visit-link" onclick="visitEncodedURL()">Visit(需要安装Bigo才能唤起)</button>
+            <button class="buttonen" onclick="encodeURL()">后台链接转广告组deeplink</button>
+            <button class="buttonun" onclick="decodeURL()">deeplink转后台链接</button>
         </div>
-        <div id="raw-encoded-url" class="result grey-background"></div>
-        <button id="copy-raw-encoded-url" class="grey-copy-button" onclick="copyToClipboard('raw-encoded-url')">Copy</button>
+        <div class="result">
+            <div>点击结果可以跳转</div>
+            <div id="output-box" class="output-box"></div>
+        </div>
+        <button id="copy-button" class="copy-button" onclick="copyOutput()">复制</button>
         <div class="description">
             <!-- 在这里填写具体的说明文字 -->
-       下方是活动页预览~
-
+            下方是活动页预览~
         </div>
         <div class="preview-container">
             <iframe id="preview-iframe" src=""></iframe>
@@ -130,42 +140,65 @@
     <script>
         function encodeURL() {
             const urlInput = document.getElementById('url-input').value.trim(); // 去除前后的空格
-            const encodedURL = encodeURIComponent(urlInput);
-            const fullEncodedURL = `bigolive://web?url=${encodedURL}`;
-            
-            const encodedURLContainer = document.getElementById('encoded-url');
-            encodedURLContainer.textContent = fullEncodedURL;
-
-            const rawEncodedURLContainer = document.getElementById('raw-encoded-url');
-            rawEncodedURLContainer.textContent = encodedURL;
-
-            const visitLinkButton = document.getElementById('visit-link');
-            if (encodedURL) {
-                visitLinkButton.style.display = 'inline-block';
+            let fullEncodedURL;
+            if (urlInput.startsWith('bigolive://web?url=')) {
+                fullEncodedURL = urlInput;
             } else {
-                visitLinkButton.style.display = 'none';
+                const encodedURL = encodeURIComponent(urlInput);
+                fullEncodedURL = `bigolive://web?url=${encodedURL}`;
             }
+            
+            const outputBox = document.getElementById('output-box');
+            outputBox.textContent = fullEncodedURL;
 
             // 更新预览区域
             const previewIframe = document.getElementById('preview-iframe');
-            previewIframe.src = urlInput;
+            previewIframe.src = urlInput.startsWith('bigolive://web?url=') ? decodeURIComponent(urlInput.replace('bigolive://web?url=', '')) : urlInput;
         }
 
-        function visitEncodedURL() {
-            const encodedURL = document.getElementById('encoded-url').textContent;
-            if (encodedURL) {
-                const url = encodedURL.replace('bigolive://web?url=', '');
-                window.open(decodeURIComponent(url), '_blank');
+        function decodeURL() {
+            let urlInput = document.getElementById('url-input').value.trim(); // 去除前后的空格
+            if (urlInput.startsWith('bigolive://web?url=')) {
+                urlInput = urlInput.replace('bigolive://web?url=', '');
             }
+            const decodedURL = decodeURIComponent(urlInput);
+
+            const outputBox = document.getElementById('output-box');
+            outputBox.textContent = decodedURL;
+
+            // 更新预览区域
+            const previewIframe = document.getElementById('preview-iframe');
+            previewIframe.src = decodedURL;
         }
 
-        function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).textContent;
+        document.getElementById('output-box').addEventListener('click', function() {
+            const text = this.textContent;
+            if (confirm('是否跳转到该链接？')) {
+                window.open(text, '_blank');
+            }
+        });
+
+        function copyOutput() {
+            const text = document.getElementById('output-box').textContent;
             navigator.clipboard.writeText(text).then(() => {
-                alert('复制成功啦');
+                alert('复制成功~新设备大R快来！');
             }).catch(err => {
                 console.error('Failed to copy: ', err);
             });
+        }
+
+        function visitURL() {
+            const urlInput = document.getElementById('url-input').value.trim();
+            const outputBox = document.getElementById('output-box').textContent.trim();
+
+            const urlToVisit = outputBox.startsWith('bigolive://web?url=') ? outputBox : (urlInput.startsWith('bigolive://web?url=') ? urlInput : '');
+
+            if (urlToVisit) {
+                const url = urlToVisit.replace('bigolive://web?url=', '');
+                window.open(decodeURIComponent(url), '_blank');
+            } else {
+                alert('上面两个没有有效的 bigolive://web?url= 开头的链接哦');
+            }
         }
     </script>
 </body>
