@@ -143,8 +143,9 @@
         <button id="copy-button" class="copy-button" onclick="copyOutput()">复制</button>
         <div class="description">
             <!-- 在这里填写具体的说明文字 -->
+            安卓在浏览器测试deeplink不跳转时，可以在在本页面点击deeplink打开
+        <div class="description">
             下方是页面预览~暂时只支持链接转化，不支持生成端内各功能的deeplink
-            安卓在浏览器测试deeplink不跳转时，可以在本页面点击deeplink打开~
         </div>
         <div class="preview-container">
             <iframe id="preview-iframe" src=""></iframe>
@@ -204,7 +205,7 @@
 
         document.getElementById('output-box').addEventListener('click', function() {
             const text = this.textContent;
-            if (confirm('是否跳转到该链接？')) {
+            if (confirm('是否跳转？')) {
                 window.open(text, '_blank');
             }
         });
