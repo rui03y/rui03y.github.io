@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Encoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #encoded-url {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            word-break: break-all;
+        }
+        #visit-link {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>URL Encoder</h1>
+        <input type="text" id="url-input" placeholder="Enter HTTP URL here">
+        <button onclick="encodeURL()">Encode URL</button>
+        <div id="encoded-url"></div>
+        <button id="visit-link" onclick="visitEncodedURL()">Visit Encoded URL</button>
+    </div>
+
+    <script>
+        function encodeURL() {
+            const urlInput = document.getElementById('url-input').value.trim(); // 去除前后的空格
+            const encodedURL = encodeURIComponent(urlInput);
+            const fullEncodedURL = `bigolive://web?url=${encodedURL}`;
+            const encodedURLContainer = document.getElementById('encoded-url');
+            encodedURLContainer.textContent = fullEncodedURL;
+
+            const visitLinkButton = document.getElementById('visit-link');
+            if (encodedURL) {
+                visitLinkButton.style.display = 'inline-block';
+            } else {
+                visitLinkButton.style.display = 'none';
+            }
+        }
+
+        function visitEncodedURL() {
+            const encodedURL = document.getElementById('encoded-url').textContent;
+            if (encodedURL) {
+                const url = encodedURL.replace('bigolive://web?url=', '');
+                window.open(decodeURIComponent(url), '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
