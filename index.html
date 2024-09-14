@@ -110,6 +110,18 @@
         .output-box {
             cursor: pointer;
         }
+        .alert {
+            color: red;
+            font-size: 22px;
+            display: none;
+        }
+        .fade-out {
+            animation: fadeOut 3s forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
     </style>
 </head>
 <body>
@@ -119,6 +131,7 @@
             <img src="dwqyyht.gif" alt="等我再加载会...">
         </div>
         <input type="text" id="url-input" placeholder="bigolive://web?url=或者运营后台链接">
+        <div class="alert" id="alert-message">是不是点错了？</div>
         <div class="button-group">
             <button class="buttonen" onclick="encodeURL()">后台链接转广告组deeplink</button>
             <button class="buttonun" onclick="decodeURL()">deeplink转后台链接</button>
@@ -154,6 +167,8 @@
             // 更新预览区域
             const previewIframe = document.getElementById('preview-iframe');
             previewIframe.src = urlInput.startsWith('bigolive://web?url=') ? decodeURIComponent(urlInput.replace('bigolive://web?url=', '')) : urlInput;
+
+            checkForError(urlInput, fullEncodedURL);
         }
 
         function decodeURL() {
@@ -169,6 +184,21 @@
             // 更新预览区域
             const previewIframe = document.getElementById('preview-iframe');
             previewIframe.src = decodedURL;
+
+            checkForError(urlInput, decodedURL);
+        }
+
+        function checkForError(input, output) {
+            const alertMessage = document.getElementById('alert-message');
+            if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
+                (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
+                alertMessage.style.display = 'block';
+                alertMessage.classList.add('fade-out');
+                setTimeout(() => {
+                    alertMessage.style.display = 'none';
+                    alertMessage.classList.remove('fade-out');
+                }, 3000);
+            }
         }
 
         document.getElementById('output-box').addEventListener('click', function() {
