@@ -8,15 +8,35 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .container {
+            width: 100%;
             max-width: 600px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .image-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
         }
         input[type="text"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
+            box-sizing: border-box;
+            height: auto; /* 高度自适应 */
+            min-height: 50px; /* 设置最小高度 */
+            background-color: white; /* 设置背景颜色为白色 */
         }
         button {
             padding: 10px 20px;
@@ -25,30 +45,85 @@
             border: none;
             cursor: pointer;
             margin-right: 10px;
+            flex: 1;
         }
         button:hover {
             background-color: #0056b3;
         }
-        #encoded-url {
+        .result {
             margin-top: 20px;
             padding: 10px;
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
             word-break: break-all;
+            height: auto; /* 高度自适应 */
+            min-height: 50px; /* 设置最小高度 */
+            width: 100%;
+            box-sizing: border-box;
         }
-        #visit-link {
-            display: none;
+        .button-group {
+            display: flex;
+            justify-content: space-between;
             margin-top: 10px;
+        }
+        .button-group button {
+            margin-right: 10px;
+        }
+        .copy-button {
+            background-color: #dc3545; /* 红色 */
+        }
+        .copy-button:hover {
+            background-color: #c82333;
+        }
+        .grey-background {
+            background-color: #e9ecef; /* 灰色背景 */
+        }
+        .grey-copy-button {
+            background-color: #6c757d; /* 灰色 */
+        }
+        .grey-copy-button:hover {
+            background-color: #5a6268;
+        }
+        .description {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .preview-container {
+            margin-top: 20px;
+            width: 100%;
+            height: 400px; /* 设置预览区域的高度 */
+            border: 1px solid #dee2e6;
+        }
+        .preview-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="image-container">
+            <img src="your-image-path.jpg" alt="Your Image Description">
+        </div>
         <h1>URL Encoder</h1>
         <input type="text" id="url-input" placeholder="Enter HTTP URL here">
         <button onclick="encodeURL()">Encode URL</button>
-        <div id="encoded-url"></div>
-        <button id="visit-link" onclick="visitEncodedURL()">Visit Encoded URL</button>
+        <div id="encoded-url" class="result"></div>
+        <div class="button-group">
+            <button id="copy-encoded-url" class="copy-button" onclick="copyToClipboard('encoded-url')">Copy</button>
+            <button id="visit-link" onclick="visitEncodedURL()">Visit Encoded URL</button>
+        </div>
+        <div id="raw-encoded-url" class="result grey-background"></div>
+        <button id="copy-raw-encoded-url" class="grey-copy-button" onclick="copyToClipboard('raw-encoded-url')">Copy</button>
+        <div class="description">
+            <!-- 在这里填写具体的说明文字 -->
+            在这里填写具体的说明文字。
+        </div>
+        <div class="preview-container">
+            <iframe id="preview-iframe" src=""></iframe>
+        </div>
     </div>
 
     <script>
@@ -56,8 +131,12 @@
             const urlInput = document.getElementById('url-input').value.trim(); // 去除前后的空格
             const encodedURL = encodeURIComponent(urlInput);
             const fullEncodedURL = `bigolive://web?url=${encodedURL}`;
+            
             const encodedURLContainer = document.getElementById('encoded-url');
             encodedURLContainer.textContent = fullEncodedURL;
+
+            const rawEncodedURLContainer = document.getElementById('raw-encoded-url');
+            rawEncodedURLContainer.textContent = encodedURL;
 
             const visitLinkButton = document.getElementById('visit-link');
             if (encodedURL) {
@@ -65,6 +144,10 @@
             } else {
                 visitLinkButton.style.display = 'none';
             }
+
+            // 更新预览区域
+            const previewIframe = document.getElementById('preview-iframe');
+            previewIframe.src = urlInput;
         }
 
         function visitEncodedURL() {
@@ -73,6 +156,15 @@
                 const url = encodedURL.replace('bigolive://web?url=', '');
                 window.open(decodeURIComponent(url), '_blank');
             }
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
         }
     </script>
 </body>
