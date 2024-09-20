@@ -131,7 +131,7 @@
             <img src="rosedino.gif" alt="等我再加载会...">
         </div>
         <input type="text" id="url-input" placeholder="bigolive://web?url=或者运营后台链接">
-        <div class="alert" id="alert-message">？？</div>
+        <div class="alert" id="alert-message">搞咩？点解乱点？</div>
         <div class="button-group">
             <button class="buttonen" onclick="encodeURL()">后台链接转广告组deeplink</button>
             <button class="buttonun" onclick="decodeURL()">deeplink转后台链接</button>
@@ -141,6 +141,7 @@
             <div id="output-box" class="output-box"></div>
         </div>
         <button id="copy-button" class="copy-button" onclick="copyOutput()">复制</button>
+        <button id="earphone-button" class="copy-button" onclick="goToEarphonePage()">去到耳机页面</button>
         <div class="description">
             <!-- 在这里填写具体的说明文字 -->
             安卓在浏览器测试deeplink不跳转时，可以在在本页面点击deeplink打开
@@ -231,6 +232,10 @@
             } else {
                 alert('上面两个没有有效的 bigolive://web?url= 开头的链接哦');
             }
+        }
+
+        function goToEarphonePage() {
+            window.location.href = 'earphone.html';
         }
     </script>
 </body>
