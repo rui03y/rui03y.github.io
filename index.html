@@ -2,236 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>Bigo Deeplink生成器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Redirect</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(to bottom right, #1c1e21, #3a3b3c);
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .image-container {
-            width: 100%;
-            max-width: 600px;
-            margin-bottom: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: #242526;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
-        .image-container img {
-            width: 50%;
-            height: auto;
+        .image-container {
+            margin-bottom: 20px;
         }
-        input[type="text"], .output-box {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
+        .image-container img {
+            width: 60%;
+            max-width: 150px;
             height: auto;
-            min-height: 50px;
-            background-color: white;
-            border: 1px solid #dee2e6;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .image-container img:hover {
+            transform: scale(1.1);
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 2px solid #3a3b3c;
+            border-radius: 8px;
+            outline: none;
+            background-color: #3a3b3c;
+            color: #ffffff;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #00aaff;
         }
         button {
-            padding: 10px 20px;
-            background-color: #dc3545;
-            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #1877f2;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
-            margin-right: 10px;
-            flex: 1;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #c82333;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            word-break: break-all;
-            height: auto;
-            min-height: 50px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .button-group button {
-            margin-right: 10px;
-        }
-        .buttonen {
-            background-color: #1E90FF;
-        }
-        .buttonen:hover {
-            background-color: #4169e1;
-        }
-        .buttonun {
-            background-color: #dc3545;
-        }
-        .buttonun:hover {
-            background-color: #c82333;
-        }
-        .grey-background {
-            background-color: #e9ecef;
-        }
-        .copy-button {
-            background-color: #6c757d;
-        }
-        .copy-button:hover {
-            background-color: #5a6268;
-        }
-        .description {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #6c757d;
-        }
-        .preview-container {
-            margin-top: 20px;
-            width: 100%;
-            height: 400px;
-            border: 1px solid #dee2e6;
-        }
-        .preview-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .output-box {
-            cursor: pointer;
-        }
-        .alert {
-            color: red;
-            font-size: 22px;
-            display: none;
-        }
-        .fade-out {
-            animation: fadeOut 3s forwards;
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; display: none; }
+            background-color: #005bb5;
         }
     </style>
 </head>
 <body>
-    <h1>广告组Deeplink生成器</h1>
     <div class="container">
+        <h1>UID跳转主页</h1>
         <div class="image-container">
-            <a href="https://bigotopr.asia/uidjump/" target="_blank">
-                <img src="rosedino.gif" alt="等我再加载会...">
-            </a>
+            <img src="fireworksdino.gif" alt="等我再加载会...">
         </div>
-        <input type="text" id="url-input" placeholder="bigolive://web?url=或者运营后台链接">
-        <div class="alert" id="alert-message">？？</div>
-        <div class="button-group">
-            <button class="buttonen" onclick="encodeURL()">后台链接转广告组deeplink</button>
-            <button class="buttonun" onclick="decodeURL()">deeplink转后台链接</button>
-        </div>
-        <div class="result">
-            <div>点击结果可以跳转</div>
-            <div id="output-box" class="output-box"></div>
-        </div>
-        <button id="copy-button" class="copy-button" onclick="copyOutput()">复制</button>
-        <div class="description">
-            <!-- 在这里填写具体的说明文字 -->
-            安卓在浏览器测试deeplink不跳转时，可以在在本页面点击deeplink打开
-        <div class="description">
-            下方是页面预览~
-        </div>
-        <div class="preview-container">
-            <iframe id="preview-iframe" src=""></iframe>
-        </div>
+        <input type="text" id="numberInput" placeholder="Enter number" oninput="validateInput(this)">
+        <button onclick="redirectToProfile()">Go to Profile</button>
     </div>
 
     <script>
-        function encodeURL() {
-            const urlInput = document.getElementById('url-input').value.trim(); // 去除前后的空格
-            let fullEncodedURL;
-            if (urlInput.startsWith('bigolive://web?url=')) {
-                fullEncodedURL = urlInput;
+        function validateInput(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        function redirectToProfile() {
+            const input = document.getElementById('numberInput').value;
+            if (input) {
+                window.location.href = `bigolive://profile?uid=${input}`;
             } else {
-                const encodedURL = encodeURIComponent(urlInput);
-                fullEncodedURL = `bigolive://web?url=${encodedURL}`;
-            }
-            
-            const outputBox = document.getElementById('output-box');
-            outputBox.textContent = fullEncodedURL;
-
-            // 更新预览区域
-            const previewIframe = document.getElementById('preview-iframe');
-            previewIframe.src = urlInput.startsWith('bigolive://web?url=') ? decodeURIComponent(urlInput.replace('bigolive://web?url=', '')) : urlInput;
-
-            checkForError(urlInput, fullEncodedURL);
-        }
-
-        function decodeURL() {
-            let urlInput = document.getElementById('url-input').value.trim(); // 去除前后的空格
-            if (urlInput.startsWith('bigolive://web?url=')) {
-                urlInput = urlInput.replace('bigolive://web?url=', '');
-            }
-            const decodedURL = decodeURIComponent(urlInput);
-
-            const outputBox = document.getElementById('output-box');
-            outputBox.textContent = decodedURL;
-
-            // 更新预览区域
-            const previewIframe = document.getElementById('preview-iframe');
-            previewIframe.src = decodedURL;
-
-            checkForError(urlInput, decodedURL);
-        }
-
-        function checkForError(input, output) {
-            const alertMessage = document.getElementById('alert-message');
-            if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
-                (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
-                alertMessage.style.display = 'block';
-                alertMessage.classList.add('fade-out');
-                setTimeout(() => {
-                    alertMessage.style.display = 'none';
-                    alertMessage.classList.remove('fade-out');
-                }, 3000);
-            }
-        }
-
-        document.getElementById('output-box').addEventListener('click', function() {
-            const text = this.textContent;
-            if (confirm('是否跳转？')) {
-                window.open(text, '_blank');
-            }
-        });
-
-        function copyOutput() {
-            const text = document.getElementById('output-box').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('复制成功~新设备大R快来！');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-
-        function visitURL() {
-            const urlInput = document.getElementById('url-input').value.trim();
-            const outputBox = document.getElementById('output-box').textContent.trim();
-
-            const urlToVisit = outputBox.startsWith('bigolive://web?url=') ? outputBox : (urlInput.startsWith('bigolive://web?url=') ? urlInput : '');
-
-            if (urlToVisit) {
-                const url = urlToVisit.replace('bigolive://web?url=', '');
-                window.open(decodeURIComponent(url), '_blank');
-            } else {
-                alert('上面两个没有有效的 bigolive://web?url= 开头的链接哦');
+                alert('Please enter a valid number.');
             }
         }
     </script>
