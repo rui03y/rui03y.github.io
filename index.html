@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>Bigo Deeplink Generator</title>
+    <title>Bigo广告Deeplink Generator</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -192,6 +192,11 @@
             .preview-container {
                 width: 100%;
                 height: 400px;
+                order: 2;
+                margin-top: 20px;
+            }
+            .form-container {
+                order: 1;
             }
         }
     </style>
@@ -201,9 +206,6 @@
     <h1>Deeplink Generator for Advertising Group</h1>
     <div class="container">
         <div class="mobile-container desktop-container">
-            <div class="preview-container">
-                <iframe id="preview-iframe" src=""></iframe>
-            </div>
             <div class="form-container">
                 <div class="image-container">
                     <a href="https://bigotopr.asia/uidjump/" target="_blank">
@@ -227,6 +229,9 @@
                 <div class="description">
                     Page preview below:
                 </div>
+            </div>
+            <div class="preview-container">
+                <iframe id="preview-iframe" src=""></iframe>
             </div>
         </div>
     </div>
