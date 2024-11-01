@@ -43,6 +43,9 @@
             border-radius: 8px;
             overflow: hidden;
             animation: fadeIn 1s ease-in;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .preview-container iframe {
             width: 100%;
@@ -231,7 +234,7 @@
                         <img src="rosedino.gif" alt="Loading...">
                     </a>
                 </div>
-                <input type="text" id="url-input" placeholder="bigolive://web?url= or 运营后台活动链接">
+                <input type="text" id="url-input" placeholder="bigolive://web?url= or backend link">
                 <div class="alert" id="alert-message">Invalid input!</div>
                 <div class="button-group">
                     <button class="buttonen" onclick="encodeURL()">Encode to Deeplink</button>
@@ -251,12 +254,12 @@
                 </div>
             </div>
             <div class="preview-container">
-                <iframe id="preview-iframe" src=""></iframe>
+                <iframe id="preview-iframe" class="mobile-preview" src=""></iframe>
             </div>
         </div>
         <div class="link-container">
-            <a href="https://bigotopr.asia/videotopic/" target="_blank">图片素材快速生成</a>
-            <a href="https://bigotopr.asia/uidjump/" target="_blank">UID跳转主页</a>
+            <a href="https://bigotopr.asia/uidjump/" target="_blank">UID跳主页</a>
+            <a href="https://bigotopr.asia/videotopic/" target="_blank">广告水图</a>
         </div>
     </div>
 
@@ -326,6 +329,23 @@
                 console.error('Failed to copy: ', err);
             });
         }
+
+        // Simulate mobile view for preview iframe when in landscape mode
+        window.addEventListener('resize', function() {
+            const previewIframe = document.getElementById('preview-iframe');
+            if (window.innerWidth > window.innerHeight) {
+                previewIframe.classList.add('mobile-preview');
+                previewIframe.style.width = '375px';
+                previewIframe.style.height = '667px';
+                previewIframe.style.display = 'flex';
+                previewIframe.style.justifyContent = 'center';
+                previewIframe.style.alignItems = 'center';
+            } else {
+                previewIframe.classList.remove('mobile-preview');
+                previewIframe.style.width = '100%';
+                previewIframe.style.height = '100%';
+            }
+        });
     </script>
 </body>
 </html>
