@@ -2,305 +2,115 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <title>Bigo广告Deeplink Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Redirect</title>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f7f8fa;
-            color: #1a1a1a;
-            padding: 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(to bottom right, #1c1e21, #3a3b3c);
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 1s ease-in;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
-            width: 100%;
-            max-width: 1200px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            animation: slideIn 0.5s ease-out;
-        }
-        .mobile-container {
-            display: flex;
-            flex-direction: column;
-        }
-        .desktop-container {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-        }
-        .preview-container {
-            flex: 0 0 70%;
-            height: 500px;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            overflow: hidden;
-            animation: fadeIn 1s ease-in;
-        }
-        .preview-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .form-container {
-            flex: 0 0 30%;
-            display: flex;
-            flex-direction: column;
-        }
-        .image-container {
-            width: 100%;
-            margin-bottom: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: #242526;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
+        .image-container {
+            margin-bottom: 20px;
+        }
         .image-container img {
-            width: 40%;
+            width: 60%;
+            max-width: 150px;
             height: auto;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 50%;
+            transition: transform 0.3s;
         }
         .image-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: scale(1.1);
         }
-        input[type="text"], .output-box {
-            width: 100%;
+        input {
+            width: calc(100% - 20px);
             padding: 12px;
+            font-size: 16px;
             margin-bottom: 15px;
-            box-sizing: border-box;
-            height: auto;
-            min-height: 45px;
-            background-color: #ffffff;
-            border: 1px solid #dfe1e5;
-            color: #1a1a1a;
+            border: 2px solid #3a3b3c;
             border-radius: 8px;
             outline: none;
-            transition: box-shadow 0.3s;
+            background-color: #3a3b3c;
+            color: #ffffff;
+            transition: border-color 0.3s;
         }
-        input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(246, 134, 81, 0.3);
+        input:focus {
+            border-color: #00aaff;
         }
         button {
-            padding: 12px;
-            background-color: #f68451;
+            padding: 12px 20px;
+            font-size: 16px;
             color: #ffffff;
+            background-color: #1877f2;
             border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-        }
-        button:hover {
-            background-color: #e67342;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .result {
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #f7f8fa;
-            border: 1px solid #dfe1e5;
             border-radius: 8px;
-            word-break: break-all;
-            min-height: 45px;
-            color: #1a1a1a;
-            transition: box-shadow 0.3s;
-        }
-        .result:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .buttonen {
-            background-color: #f68451;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-        }
-        .buttonen:hover {
-            background-color: #e67342;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .buttonun {
-            background-color: #227144;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-        }
-        .buttonun:hover {
-            background-color: #1c5d39;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .copy-button {
-            margin-top: 15px;
-            padding: 12px;
-            background-color: #f68451;
-            color: #ffffff;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-        }
-        .copy-button:hover {
-            background-color: #e67342;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .description {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #5f6368;
-        }
-        .output-box {
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .output-box:hover {
-            background-color: #e8f0fe;
+        button:hover {
+            background-color: #005bb5;
         }
-        .alert {
-            color: #ea4335;
-            font-size: 18px;
-            display: none;
-            margin-top: 10px;
+        .links-container {
+            margin-top: 30px;
         }
-        .fade-out {
-            animation: fadeOut 3s forwards;
+        .link {
+            display: block;
+            margin: 10px 0;
+            color: #00aaff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
         }
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; display: none; }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes slideIn {
-            0% { transform: translateY(20px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-        @media (max-width: 768px) {
-            .desktop-container {
-                flex-direction: column;
-            }
-            .preview-container {
-                width: 100%;
-                height: 400px;
-                order: 2;
-                margin-top: 20px;
-            }
-            .form-container {
-                order: 1;
-            }
+        .link:hover {
+            color: #0088cc;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Deeplink Generator for Advertising Group</h1>
     <div class="container">
-        <div class="mobile-container desktop-container">
-            <div class="form-container">
-                <div class="image-container">
-                    <a href="https://bigotopr.asia/uidjump/" target="_blank">
-                        <img src="rosedino.gif" alt="Loading...">
-                    </a>
-                </div>
-                <input type="text" id="url-input" placeholder="bigolive://web?url= or backend link">
-                <div class="alert" id="alert-message">Invalid input!</div>
-                <div class="button-group">
-                    <button class="buttonen" onclick="encodeURL()">Encode to Deeplink</button>
-                    <button class="buttonun" onclick="decodeURL()">Decode from Deeplink</button>
-                </div>
-                <div class="result">
-                    <div>Click the result to open</div>
-                    <div id="output-box" class="output-box"></div>
-                </div>
-                <button id="copy-button" class="copy-button" onclick="copyOutput()">Copy</button>
-                <div class="description">
-                    For Android users: if deeplink does not open in the browser, click on the deeplink here to open it.
-                </div>
-                <div class="description">
-                    Page preview below:
-                </div>
-            </div>
-            <div class="preview-container">
-                <iframe id="preview-iframe" src=""></iframe>
-            </div>
+        <h1>UID跳转主页</h1>
+        <div class="image-container">
+            <img src="fireworksdino.gif" alt="等我再加载会...">
+        </div>
+        <input type="text" id="numberInput" placeholder="Enter number" oninput="validateInput(this)">
+        <button onclick="redirectToProfile()">Go to Profile</button>
+        <div class="links-container">
+            <a href="#" class="link">Link 1</a>
+            <a href="#" class="link">Link 2</a>
+            <a href="#" class="link">Link 3</a>
+            <a href="#" class="link">Link 4</a>
+            <a href="#" class="link">Link 5</a>
         </div>
     </div>
 
     <script>
-        function encodeURL() {
-            const urlInput = document.getElementById('url-input').value.trim();
-            let fullEncodedURL;
-            if (urlInput.startsWith('bigolive://web?url=')) {
-                fullEncodedURL = urlInput;
+        function validateInput(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        function redirectToProfile() {
+            const input = document.getElementById('numberInput').value;
+            if (input) {
+                window.location.href = `bigolive://profile?uid=${input}`;
             } else {
-                const encodedURL = encodeURIComponent(urlInput);
-                fullEncodedURL = `bigolive://web?url=${encodedURL}`;
+                alert('Please enter a valid number.');
             }
-            
-            const outputBox = document.getElementById('output-box');
-            outputBox.textContent = fullEncodedURL;
-
-            // Update preview area
-            const previewIframe = document.getElementById('preview-iframe');
-            previewIframe.src = urlInput.startsWith('bigolive://web?url=') ? decodeURIComponent(urlInput.replace('bigolive://web?url=', '')) : urlInput;
-
-            checkForError(urlInput, fullEncodedURL);
-        }
-
-        function decodeURL() {
-            let urlInput = document.getElementById('url-input').value.trim();
-            if (urlInput.startsWith('bigolive://web?url=')) {
-                urlInput = urlInput.replace('bigolive://web?url=', '');
-            }
-            const decodedURL = decodeURIComponent(urlInput);
-
-            const outputBox = document.getElementById('output-box');
-            outputBox.textContent = decodedURL;
-
-            // Update preview area
-            const previewIframe = document.getElementById('preview-iframe');
-            previewIframe.src = decodedURL;
-
-            checkForError(urlInput, decodedURL);
-        }
-
-        function checkForError(input, output) {
-            const alertMessage = document.getElementById('alert-message');
-            if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
-                (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
-                alertMessage.style.display = 'block';
-                alertMessage.classList.add('fade-out');
-                setTimeout(() => {
-                    alertMessage.style.display = 'none';
-                    alertMessage.classList.remove('fade-out');
-                }, 3000);
-            }
-        }
-
-        document.getElementById('output-box').addEventListener('click', function() {
-            const text = this.textContent;
-            if (confirm('Do you want to open this link?')) {
-                window.open(text, '_blank');
-            }
-        });
-
-        function copyOutput() {
-            const text = document.getElementById('output-box').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Copied successfully!');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
         }
     </script>
 </body>
