@@ -30,26 +30,25 @@
             animation: fadeIn 1s ease-in;
         }
         /* ===== 左侧浮窗动画样式 ===== */
-.side-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 360px;
-    height: 100vh;
-    background: #fff;
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-    transform: translateX(-100%);
-    transition: transform 0.4s ease;
-    overflow: hidden;
-}
-.side-popup.show {
-    transform: translateX(0);
-}
-.side-popup.hidden {
-    transform: translateX(-100%);
-}
-
+        .side-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 360px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            overflow: hidden;
+        }
+        .side-popup.show {
+            transform: translateX(0);
+        }
+        .side-popup.hidden {
+            transform: translateX(-100%);
+        }
         .container {
             width: 100%;
             max-width: 850px;
@@ -387,18 +386,18 @@
             }
         });
         // 左侧弹窗控制
-document.getElementById("open-popup").addEventListener("click", function (e) {
-    e.preventDefault();
-    const popup = document.getElementById("side-popup");
-    popup.classList.remove("hidden");
-    popup.classList.add("show");
-});
-
-document.getElementById("close-popup").addEventListener("click", function () {
-    const popup = document.getElementById("side-popup");
-    popup.classList.remove("show");
-    popup.classList.add("hidden");
-});
+        document.getElementById("open-popup").addEventListener("click", function (e) {
+            e.preventDefault();
+            const popup = document.getElementById("side-popup");
+            popup.classList.remove("hidden");
+            popup.classList.add("show");
+        });
+        
+        document.getElementById("close-popup").addEventListener("click", function () {
+            const popup = document.getElementById("side-popup");
+            popup.classList.remove("show");
+            popup.classList.add("hidden");
+        });
     </script>
 </body>
 </html>
