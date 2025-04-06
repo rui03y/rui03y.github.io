@@ -1,22 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>The Rock</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WW55Y6WLX1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-WW55Y6WLX1');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta property="og:title" content="命名生成器" />
-    <meta property="og:description" content="这是一个bigo deeplink生成工具" />
-    <meta property="og:url" content="https://bigotopr.aisa" />
-    <meta property="og:image" content="https://www.bigo.tv/_nuxt_cdn_/img/logo-b.4bcead.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>Bigo广告Deeplink Generator</title>
     <style>
         body {
@@ -29,7 +15,7 @@
             align-items: center;
             animation: fadeIn 1s ease-in;
         }
-        /* ===== 左侧浮窗动画样式 ===== */
+
         .side-popup {
             position: fixed;
             top: 0;
@@ -43,12 +29,11 @@
             transition: transform 0.4s ease;
             overflow: hidden;
         }
+
         .side-popup.show {
             transform: translateX(0);
         }
-        .side-popup.hidden {
-            transform: translateX(-100%);
-        }
+
         .container {
             width: 100%;
             max-width: 850px;
@@ -57,39 +42,34 @@
             padding: 25px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
             display: flex;
-            flex-direction: row;
-            display: flex;
-            flex-wrap: wrap;  /* 允许子元素换行，保证移动端自适应 */
-            justify-content: space-between;            
+            flex-wrap: wrap;
+            justify-content: space-between;
             gap: 20px;
-            animation: slideIn 0.5s ease-out;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
             width: 100%;
         }
+
         .header h1 {
             font-size: 28px;
             font-weight: 700;
             color: #333;
         }
-        
+
         .image-container {
             width: 100%;
             margin-bottom: 20px;
             text-align: center;
         }
+
         .image-container img {
             width: 40%;
-            height: auto;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
         }
-        .image-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
+
         .form-container {
             flex: 1;
             max-width: 380px;
@@ -98,24 +78,24 @@
             padding: 20px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .form-container input[type="text"] {
+
+        input[type="text"], .output-box {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
+            box-sizing: border-box;
             border: 1px solid #dfe1e5;
             border-radius: 8px;
-            outline: none;
-            transition: box-shadow 0.3s;
+            background-color: #fff;
         }
-        .form-container input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(246, 134, 81, 0.3);
-        }
+
         .button-group {
             display: flex;
             gap: 10px;
             justify-content: center;
         }
-        .buttonen, .buttonun {
+
+        .buttonen, .buttonun, .copy-button {
             flex: 1;
             padding: 12px;
             background-color: #f68451;
@@ -123,135 +103,23 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
         }
-        .buttonen:hover, .buttonun:hover {
-            background-color: #e67342;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
-        input[type="text"], .output-box {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            height: auto;
-            min-height: 45px;
-            background-color: #ffffff;
-            border: 1px solid #dfe1e5;
-            color: #1a1a1a;
-            border-radius: 8px;
-            outline: none;
-            transition: box-shadow 0.3s;
-        }
-        input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(246, 134, 81, 0.3);
-        }
-        .copy-button {
-            margin-top: 15px;
-            padding: 12px;
-            background-color: #227144;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-        .copy-button:hover {
-            background-color: #1c5d39;
-        }
+
         .preview-container {
             flex: 2;
             background-color: #f7f8fa;
             border-radius: 12px;
             border: 1px solid #dfe1e5;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 100%;
             max-width: 350px;
             height: 80vh;
         }
+
         .preview-container iframe {
             width: 100%;
             height: 100%;
             border: none;
-            border-radius: 8px;
         }
-        .description {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #f7f8fa;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            word-break: break-all;
-            min-height: 45px;
-            color: #1a1a1a;
-            transition: box-shadow 0.3s;
-        }
-        .result:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .output-box {
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .output-box:hover {
-            background-color: #e8f0fe;
-        }
-        .alert {
-            color: #ea4335;
-            font-size: 18px;
-            display: none;
-            margin-top: 10px;
-        }
-        .fade-out {
-            animation: fadeOut 3s forwards;
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; display: none; }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes slideIn {
-            0% { transform: translateY(20px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-        @media (max-width: 768px) {
-        .container {
-            flex-direction: column;  /* 改为上下排列，表单在上，预览区在下 */
-            align-items: center;
-        }
-        .form-container {
-            width: 100%;  /* 表单占据全部宽度 */
-        }
-        .preview-container {
-                height: 50vh;  /* 小屏幕时预览区高度减小 */
-            }
-        }
-        @media (max-width: 576px) {
-            .preview-container {
-                height: 45vh;  /* 超小屏幕时预览区高度进一步缩小 */
-            }
-            .form-container input[type="text"],
-            .buttonen,
-            .buttonun,
-            .copy-button {
-                padding: 10px;  /* 减小输入框和按钮的内边距，保持更紧凑布局 */
-            }
-        }
-
 
         .link-container {
             margin-top: 30px;
@@ -263,140 +131,85 @@
             border-radius: 8px;
             width: 100%;
         }
+
         .link-container a {
             color: #1a73e8;
-            text-decoration: none;
             font-weight: 700;
-            transition: color 0.3s;
-        }
-        .link-container a:hover {
-            color: #0049b0;
+            text-decoration: none;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div class="header">
         <h1>Bigo广告Deeplink转换器</h1>
     </div>
+
     <div class="container">
         <div class="form-container">
-           <!-- Dino动图触发按钮 -->
-<div class="image-container">
-    <img src="rosedino.gif" alt="点击展开浮窗" id="open-popup" style="cursor:pointer;">
-</div>
+            <div class="image-container">
+                <img src="rosedino.gif" id="open-popup" alt="点击展开浮窗" />
+            </div>
 
-<!-- 左侧弹窗：注意放在外面，不嵌在img里 -->
-<div id="side-popup" class="side-popup hidden">
-    <div style="padding: 10px; text-align: right; background: #fff; border-bottom: 1px solid #eee;">
-        <button id="close-popup"
-                style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            关闭
-        </button>
+            <input type="text" id="url-input" placeholder="请输入链接">
+            <div class="button-group">
+                <button class="buttonen" onclick="encodeURL()">Encode to Deeplink</button>
+                <button class="buttonun" onclick="decodeURL()">Decode from Deeplink</button>
+            </div>
+            <div class="output-box" id="output-box"></div>
+            <button class="copy-button" onclick="copyOutput()">复制</button>
+        </div>
+
+        <div class="preview-container">
+            <iframe id="preview-iframe" src=""></iframe>
+        </div>
     </div>
-    <iframe src="https://sic-guild-identifying-exploring.trycloudflare.com"
-            style="width: 100%; height: calc(100vh - 50px); border: none;"></iframe>
-</div>
 
-    
+    <div class="link-container">
+        <a href="#">UID跳主页</a>
+        <a href="#">广告水图</a>
+        <a href="#">运营后台</a>
+    </div>
+
+    <!-- ✅ 弹窗放在最外面 -->
+    <div id="side-popup" class="side-popup">
+        <div style="padding: 10px; text-align: right;">
+            <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px;">关闭</button>
+        </div>
+        <iframe src="https://sic-guild-identifying-exploring.trycloudflare.com"
+                style="width: 100%; height: calc(100vh - 50px); border: none;"></iframe>
+    </div>
+
     <script>
         function encodeURL() {
-            const urlInput = document.getElementById('url-input').value.trim();
-            let fullEncodedURL;
-            if (urlInput.startsWith('bigolive://web?url=')) {
-                fullEncodedURL = urlInput;
-            } else {
-                const encodedURL = encodeURIComponent(urlInput);
-                fullEncodedURL = `bigolive://web?url=${encodedURL}`;
-            }
-            document.getElementById('output-box').textContent = fullEncodedURL;
-            document.getElementById('preview-iframe').src = fullEncodedURL.replace('bigolive://web?url=', '');
-
-            // Update preview area
-            const previewIframe = document.getElementById('preview-iframe');
-            previewIframe.src = urlInput.startsWith('bigolive://web?url=') ? decodeURIComponent(urlInput.replace('bigolive://web?url=', '')) : urlInput;
-
-            checkForError(urlInput, fullEncodedURL);
+            const input = document.getElementById('url-input').value.trim();
+            const encoded = input.startsWith('bigolive://web?url=') ? input : `bigolive://web?url=${encodeURIComponent(input)}`;
+            document.getElementById('output-box').textContent = encoded;
+            document.getElementById('preview-iframe').src = encoded.replace('bigolive://web?url=', '');
         }
 
         function decodeURL() {
-            let urlInput = document.getElementById('url-input').value.trim();
-            if (urlInput.startsWith('bigolive://web?url=')) {
-                urlInput = urlInput.replace('bigolive://web?url=', '');
+            let input = document.getElementById('url-input').value.trim();
+            if (input.startsWith('bigolive://web?url=')) {
+                input = input.replace('bigolive://web?url=', '');
             }
-            const decodedURL = decodeURIComponent(urlInput);
-            document.getElementById('output-box').textContent = decodedURL;
-            document.getElementById('preview-iframe').src = decodedURL;
+            const decoded = decodeURIComponent(input);
+            document.getElementById('output-box').textContent = decoded;
+            document.getElementById('preview-iframe').src = decoded;
         }
 
-        function checkForError(input, output) {
-            const alertMessage = document.getElementById('alert-message');
-            if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
-                (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
-                alertMessage.style.display = 'block';
-                alertMessage.classList.add('fade-out');
-                setTimeout(() => {
-                    alertMessage.style.display = 'none';
-                    alertMessage.classList.remove('fade-out');
-                }, 3000);
-            }
-        }
-
-        document.getElementById('output-box').addEventListener('click', function() {
-            const text = this.textContent;
-            if (confirm('Do you want to open this link?')) {
-                window.open(text, '_blank');
-            }
-        });
-        
-        function checkForError(input, output) {
-            const alertMessage = document.getElementById('alert-message');
-            if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
-                (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
-                alertMessage.style.display = 'block';
-                alertMessage.classList.add('fade-out');
-                setTimeout(() => {
-                    alertMessage.style.display = 'none';
-                    alertMessage.classList.remove('fade-out');
-                }, 3000);
-            }
-        }
-        
         function copyOutput() {
             const text = document.getElementById('output-box').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Copied successfully!');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
+            navigator.clipboard.writeText(text).then(() => alert('已复制')).catch(err => console.error(err));
         }
 
-        document.getElementById('output-box').addEventListener('click', function() {
-            const text = this.textContent;
-            if (confirm('Do you want to open this link?')) {
-                window.open(text, '_blank');
-            }
+        // 弹窗打开关闭
+        document.getElementById('open-popup').addEventListener('click', () => {
+            document.getElementById('side-popup').classList.add('show');
         });
-        window.addEventListener('resize', function() {
-            const previewIframe = document.getElementById('preview-iframe');
-            if (window.innerWidth < 768) {
-                previewIframe.style.height = '45vh';
-            } else {
-                previewIframe.style.height = '70vh';
-            }
-        });
-        // 左侧弹窗控制
-        document.getElementById("open-popup").addEventListener("click", function (e) {
-            e.preventDefault();
-            const popup = document.getElementById("side-popup");
-            popup.classList.remove("hidden");
-            popup.classList.add("show");
-        });
-        
-        document.getElementById("close-popup").addEventListener("click", function () {
-            const popup = document.getElementById("side-popup");
-            popup.classList.remove("show");
-            popup.classList.add("hidden");
+
+        document.getElementById('close-popup').addEventListener('click', () => {
+            document.getElementById('side-popup').classList.remove('show');
         });
     </script>
 </body>
