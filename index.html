@@ -29,6 +29,27 @@
             align-items: center;
             animation: fadeIn 1s ease-in;
         }
+        /* ===== 左侧浮窗动画样式 ===== */
+.side-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 360px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    overflow: hidden;
+}
+.side-popup.show {
+    transform: translateX(0);
+}
+.side-popup.hidden {
+    transform: translateX(-100%);
+}
+
         .container {
             width: 100%;
             max-width: 850px;
@@ -261,25 +282,23 @@
     </div>
     <div class="container">
         <div class="form-container">
-            <div class="image-container">
-                <a href="https://bigotopr.asia/uidjump/" target="_blank">
-                    <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
-                </a>
-<!-- 左侧弹窗 -->
-<div id="side-popup" 
-     style="display:none; position:fixed; top:0; left:0; width:360px; height:100vh; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease; overflow: hidden;">
+           <!-- Dino动图触发按钮 -->
+<div class="image-container">
+    <img src="rosedino.gif" alt="点击展开浮窗" id="open-popup" style="cursor:pointer;">
+</div>
 
+<!-- 左侧弹窗：注意放在外面，不嵌在img里 -->
+<div id="side-popup" class="side-popup hidden">
     <div style="padding: 10px; text-align: right; background: #fff; border-bottom: 1px solid #eee;">
         <button id="close-popup"
                 style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">
             关闭
         </button>
     </div>
-
-    <iframe src="https://sic-guild-identifying-exploring.trycloudflare.com" 
+    <iframe src="https://sic-guild-identifying-exploring.trycloudflare.com"
             style="width: 100%; height: calc(100vh - 50px); border: none;"></iframe>
 </div>
-    </div>
+
     
     <script>
         function encodeURL() {
@@ -368,13 +387,17 @@
             }
         });
         // 左侧弹窗控制
-document.getElementById("open-popup").addEventListener("click", function(e) {
-    e.preventDefault();  // 防止 a 标签默认跳转
-    document.getElementById("side-popup").style.display = "block";
+document.getElementById("open-popup").addEventListener("click", function (e) {
+    e.preventDefault();
+    const popup = document.getElementById("side-popup");
+    popup.classList.remove("hidden");
+    popup.classList.add("show");
 });
 
-document.getElementById("close-popup").addEventListener("click", function() {
-    document.getElementById("side-popup").style.display = "none";
+document.getElementById("close-popup").addEventListener("click", function () {
+    const popup = document.getElementById("side-popup");
+    popup.classList.remove("show");
+    popup.classList.add("hidden");
 });
     </script>
 </body>
