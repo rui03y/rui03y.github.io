@@ -265,15 +265,28 @@
                 <a href="https://bigotopr.asia/uidjump/" target="_blank">
                     <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
                 </a>
-                <!-- 左侧弹窗 -->
-<div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
-    <div style="padding: 10px; text-align: right;">
-        <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">关闭</button>
-    </div>
-     <iframe src="https://sic-guild-identifying-exploring.trycloudflare.com" width="100%" height="600px"></iframe>
-  </iframe>
-</div>
+<!-- 触发按钮 -->
+<button onclick="document.getElementById('side-popup').style.display='block'" 
+        style="position:fixed; top:20px; left:20px; z-index:99999; padding:10px 16px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer;">
+    打开代理页面
+</button>
 
+<!-- 左侧弹窗 -->
+<div id="side-popup" 
+     style="display:none; position:fixed; top:0; left:0; width:360px; height:100vh; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
+    
+    <div style="padding: 10px; text-align: right;">
+        <button onclick="document.getElementById('side-popup').style.display='none'" 
+                style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            关闭
+        </button>
+    </div>
+
+    <iframe src="https://sic-guild-identifying-exploring.trycloudflare.com" 
+            width="100%" 
+            height="calc(100vh - 50px)" 
+            style="border: none;"></iframe>
+</div>
             </div>
             <div class="image-container"></div>
             <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
