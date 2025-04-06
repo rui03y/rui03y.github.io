@@ -265,24 +265,56 @@
                 <a href="https://bigotopr.asia/uidjump/" target="_blank">
                     <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
                 </a>
+<!-- 触发按钮 -->
+<button onclick="document.getElementById('side-popup').style.display='block'" 
+        style="position:fixed; top:20px; left:20px; z-index:99999; padding:10px 16px; background:#007BFF; color:white; border:none; border-radius:5px; cursor:pointer;">
+    打开代理页面
+</button>
 
 <!-- 左侧弹窗 -->
 <div id="side-popup" 
-     style="display:none; position:fixed; top:0; left:0; width:320px; height:100vh; background:#f9f9f9; box-shadow: 4px 0 12px rgba(0,0,0,0.1); z-index:9999; transition: transform 0.3s ease;">
+     style="display:none; position:fixed; top:0; left:0; width:360px; height:100vh; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
     
-    <div style="padding: 8px 12px; background: #fff; text-align: right; border-bottom: 1px solid #ddd;">
+    <div style="padding: 10px; text-align: right;">
         <button onclick="document.getElementById('side-popup').style.display='none'" 
-                style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">
             关闭
         </button>
     </div>
 
-    <iframe src="https://你的隧道地址.trycloudflare.com" 
+    <iframe src="https://sic-guild-identifying-exploring.trycloudflare.com" 
             width="100%" 
             height="calc(100vh - 50px)" 
             style="border: none;"></iframe>
 </div>
-
+            </div>
+            <div class="image-container"></div>
+            <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
+            <div class="alert" id="alert-message">!</div>
+            <div class="button-group">
+                <button class="buttonen" onclick="encodeURL()">Encode to Deeplink</button>
+                <button class="buttonun" onclick="decodeURL()">Decode from Deeplink</button>
+            </div>
+            <div class="result">
+                <div>点击结果可跳转</div>
+                <div id="output-box" class="output-box"></div>
+            </div>
+            <button class="copy-button" onclick="copyOutput()">复制</button>
+            <div class="description"></div>
+            <div class="description">用于deeplink互转&Page preview</br>部分活动页限制了端内打开，会无法预览</br>
+            <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank" rel="noopener" >运营后台-活动模板页</a></br>
+            </div>
+        </div>
+        <div class="preview-container" id="preview-container">
+            <iframe id="preview-iframe" src=""></iframe>
+        </div>
+        <div class="link-container">
+            <a href="https://bigotopr.asia/uidjump/" target="_blank">UID跳主页</a>
+            <a href="https://bigotopr.asia/videotopic/" target="_blank">广告水图</a>
+            <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank">运营后台-活动模板</a>
+            <a href="https://bigotopr.asia/w2a/" target="_blank">W2A链接生成器</a>
+        </div>
+    </div>
     
     <script>
         function encodeURL() {
