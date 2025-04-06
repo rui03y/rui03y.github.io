@@ -265,19 +265,24 @@
                 <a href="https://bigotopr.asia/uidjump/" target="_blank">
                     <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
                 </a>
-               <!-- 左侧弹窗：增强版，iframe 自适应缩放 -->
-<div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
+<!-- 左侧弹窗（带 iframe 缩放，适配 360px 宽） -->
+<div id="side-popup"
+     style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
     <div style="padding: 10px; text-align: right;">
-        <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">关闭</button>
+        <button id="close-popup"
+                style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            关闭
+        </button>
     </div>
-    <div style="width: 360px; height: calc(100% - 40px); overflow: hidden;">
+    <div style="width: 360px; height: calc(100% - 50px); overflow: hidden;">
         <iframe 
             id="popup-iframe"
-            src="https://3cekmyrn6nb.execute-api.ap-southeast-2.amazonaws.com/proxy-short"
+            src="https://sic-guild-identifying-exploring.trycloudflare.com"
             style="width: 1280px; height: 100vh; border: none; transform: scale(0.28); transform-origin: top left;">
         </iframe>
     </div>
 </div>
+
             <div class="image-container"></div>
             <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
             <div class="alert" id="alert-message">!</div>
