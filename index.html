@@ -252,43 +252,6 @@
         .link-container a:hover {
             color: #0049b0;
         }
-        .card-wrapper {
-    width: 100%;
-    max-width: 240px;
-    margin: auto;
-    perspective: 1000px;
-        }
-        .card-face {
-            width: 100%;
-            backface-visibility: hidden;
-            transition: transform 0.6s;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            background-color: white;
-        }
-        
-        .front {
-            transform: rotateY(0deg);
-            z-index: 2;
-            position: relative;
-        }
-        
-        .back {
-            transform: rotateY(180deg);
-            z-index: 1;
-            position: relative;
-            display: none;
-        }
-        
-        .card-wrapper.flipped .front {
-            display: none;
-        }
-        
-        .card-wrapper.flipped .back {
-            display: block;
-        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -298,22 +261,19 @@
     </div>
     <div class="container">
         <div class="form-container">
-        <div class="image-container">
-            <div class="card-wrapper" id="card">
-                <div class="card-face front">
-                    <img src="rosedino.gif" alt="Loading..." id="dino-trigger" style="cursor:pointer;">
-                </div>
-                <div class="card-face back">
-                    <h3>短链生成器</h3>
-                    <input id="popup-url-input" type="text" placeholder="输入原始链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
-                    <button onclick="generateShortlinkFromPopup()" style="padding: 8px 16px; margin: 5px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
-                    <button onclick="copyPopupResult()" style="padding: 8px 16px; margin: 5px; background: #227144; color: white; border: none; border-radius: 5px;">复制短链</button>
-                    <button onclick="flipCardBack()" style="padding: 8px 16px; margin: 5px; background: #888; color: white; border: none; border-radius: 5px;">返回</button>
-                    <div id="popup-result" style="margin-top: 10px; word-break: break-all; font-weight: bold;"></div>
-                </div>
-            </div>
+            <div class="image-container">
+                    <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
+                <!-- 左侧弹窗 -->
+    <div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
+        <div style="padding: 10px; text-align: right;">
+            <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">关闭</button>
         </div>
-
+        <div style="padding: 20px;">
+      <h3>短链生成器</h3>
+      <input id="popup-url-input" type="text" placeholder="输入原始链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
+      <button onclick="generateShortlinkFromPopup()" style="padding: 10px 20px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
+      <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
+    </div>
     </div>
 
             </div>
@@ -450,29 +410,6 @@
             console.warn("[❌] 弹窗相关元素未正确加载");
         }
     });
-
-        // Dino点击 => 卡片翻转
-    document.getElementById("dino-trigger").addEventListener("click", function () {
-        document.getElementById("card").classList.add("flipped");
-    });
-    
-    // 返回按钮 => 恢复原始
-    function flipCardBack() {
-        document.getElementById("card").classList.remove("flipped");
-    }
-    
-    // 复制短链按钮
-    function copyPopupResult() {
-        const resultEl = document.getElementById("popup-result");
-        const link = resultEl.querySelector("a");
-        if (link) {
-            navigator.clipboard.writeText(link.href).then(() => {
-                alert("短链已复制！");
-            });
-        } else {
-            alert("未找到可复制的链接！");
-        }
-    }
 </script>
 </body>
 </html>
