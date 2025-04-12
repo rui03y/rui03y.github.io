@@ -273,6 +273,10 @@
       <input id="popup-url-input" type="text" placeholder="输入原始链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
       <button onclick="generateShortlinkFromPopup()" style="padding: 10px 20px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
       <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
+      <button id="copy-adname-btn" onclick="copyAdname()" style="display:none; margin-top:10px; padding: 8px 16px; background:#227144; color:white; border:none; border-radius:5px; cursor:pointer;">
+        复制拼接(__code__)
+    </button>
+    
     </div>
     </div>
 
@@ -327,6 +331,16 @@
         checkForError(urlInput, fullEncodedURL);
     }
 
+    function copyAdname() {
+    const adname = document.getElementById("adname-to-copy").textContent;
+    navigator.clipboard.writeText(adname).then(() => {
+        alert(`已复制：${adname}`);
+    }).catch(err => {
+        alert("？");
+        console.error(err);
+    });
+    }
+
     function generateShortlinkFromPopup() {
         const url = document.getElementById("popup-url-input").value.trim();
         if (!url) {
@@ -345,8 +359,25 @@
         .then(data => {
             const resultBox = document.getElementById("popup-result");
             if (data.shortlink) {
-                resultBox.innerHTML = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
+              if (data.shortlink) {
+                  const match = data.shortlink.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
+                  const shortcode = match && match[1] ? match[1] : '';
+
+                  const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
+                  const formattedAdname = `📣 广告名拼接：<span style="font-weight:bold;">__${shortcode}__</span>`;
+
+                  resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
+
+                  // 同时更新 iframe 预览
+                  document.getElementById("preview-iframe").src = data.shortlink;
+
+                  // （可选）也可以写入输入框或复制框
+                  document.getElementById("output-box").textContent = `__${shortcode}__`;
+              }
                 document.getElementById("preview-iframe").src = data.shortlink;
+
+                    // ✅ 显示复制按钮
+                document.getElementById("copy-adname-btn").style.display = "inline-block";
             } else {
                 resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
             }
