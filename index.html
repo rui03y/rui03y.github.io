@@ -270,7 +270,12 @@
     <div style="padding: 10px; text-align: right;">
         <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">关闭</button>
     </div>
-    <iframe src="http://short.bigo.sg/" style="width:100%; height: calc(100% - 40px); border:none;"></iframe>
+    <div style="padding: 20px;">
+  <h3>短链生成器</h3>
+  <input id="popup-url-input" type="text" placeholder="输入原始链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
+  <button onclick="generateShortlinkFromPopup()" style="padding: 10px 20px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
+  <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
+</div>
 </div>
 
             </div>
@@ -321,7 +326,34 @@
 
             checkForError(urlInput, fullEncodedURL);
         }
-
+        function generateShortlinkFromPopup() {
+            const url = document.getElementById("popup-url-input").value.trim();
+            if (!url) {
+                alert("请输入原始链接！");
+                return;
+            }
+        
+            fetch("http://<你的EC2公网IP>:5000/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultBox = document.getElementById("popup-result");
+                if (data.shortlink) {
+                    resultBox.innerHTML = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
+                } else {
+                    resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
+                }
+            })
+            .catch(error => {
+                document.getElementById("popup-result").textContent = "请求失败：" + error;
+            });
+        }
+        
         function decodeURL() {
             let urlInput = document.getElementById('url-input').value.trim();
             if (urlInput.startsWith('bigolive://web?url=')) {
