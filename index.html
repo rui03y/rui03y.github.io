@@ -422,10 +422,16 @@
             }
         });
         // 左侧弹窗控制
-document.getElementById("open-popup").addEventListener("click", function(e) {
-    e.preventDefault();  // 防止 a 标签默认跳转
-    document.getElementById("side-popup").style.display = "block";
-});
+        window.onload = function () {
+            document.getElementById("open-popup").addEventListener("click", function(e) {
+                e.preventDefault();
+                document.getElementById("side-popup").style.display = "block";
+            });
+        
+            document.getElementById("close-popup").addEventListener("click", function() {
+                document.getElementById("side-popup").style.display = "none";
+            });
+        };
 
 document.getElementById("close-popup").addEventListener("click", function() {
     document.getElementById("side-popup").style.display = "none";
