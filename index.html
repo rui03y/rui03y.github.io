@@ -315,9 +315,14 @@
             const encodedURL = encodeURIComponent(urlInput);
             fullEncodedURL = `bigolive://web?url=${encodedURL}`;
         }
+    
+        // 更新输出框
         document.getElementById('output-box').textContent = fullEncodedURL;
-        document.getElementById('preview-iframe').src = fullEncodedURL.replace('bigolive://web?url=', '');
-
+    
+        // ✅ 正确更新 iframe，先 decode 一下再赋值
+        let decodedURL = decodeURIComponent(fullEncodedURL.replace('bigolive://web?url=', ''));
+        document.getElementById('preview-iframe').src = decodedURL;
+    
         checkForError(urlInput, fullEncodedURL);
     }
 
