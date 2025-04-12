@@ -303,6 +303,7 @@
             <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank">运营后台-活动模板</a>
             <a href="https://bigotopr.asia/w2a/" target="_blank">W2A链接生成器</a>
         </div>
+        <iframe id="login-check-frame" src="" style="display:none;"></iframe>
     </div>
 
 <script>
@@ -405,7 +406,27 @@
         if (openBtn && closeBtn && sidePopup) {
             openBtn.addEventListener("click", function (e) {
                 e.preventDefault();
-                sidePopup.style.display = "block";
+            
+                const iframe = document.getElementById("login-check-frame");
+                const sidePopup = document.getElementById("side-popup");
+            
+                // 先清空 iframe.src，避免缓存影响
+                iframe.src = "";
+            
+                // 设置检测目标页
+                iframe.src = "https://ant.bigo.sg/p/welcome?appId=60";
+            
+                // 成功加载说明已登录
+                iframe.onload = function () {
+                    sidePopup.style.display = "block";
+                };
+            
+                // 超时处理（3秒后还没加载说明未登录）
+                setTimeout(() => {
+                    if (sidePopup.style.display !== "block") {
+                        alert("请先登录 ant.bigo.sg 后再使用该功能");
+                    }
+                }, 3000);
             });
 
             closeBtn.addEventListener("click", function () {
