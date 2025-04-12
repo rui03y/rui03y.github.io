@@ -1,415 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Deeplink转换器</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WW55Y6WLX1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-WW55Y6WLX1');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta property="og:title" content="命名生成器" />
-    <meta property="og:description" content="这是一个bigo deeplink生成工具" />
-    <meta property="og:url" content="https://bigotopr.aisa" />
-    <meta property="og:image" content="https://www.bigo.tv/_nuxt_cdn_/img/logo-b.4bcead.png" />
-    <title>Bigo广告Deeplink Generator</title>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f7f8fa;
-            color: #1a1a1a;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeIn 1s ease-in;
-        }
-        .container {
-            width: 100%;
-            max-width: 850px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: row;
-            display: flex;
-            flex-wrap: wrap;  /* 允许子元素换行，保证移动端自适应 */
-            justify-content: space-between;            
-            gap: 20px;
-            animation: slideIn 0.5s ease-out;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-        }
-        
-        .image-container {
-            width: 100%;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .image-container img {
-            width: 40%;
-            height: auto;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .image-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        .form-container {
-            flex: 1;
-            max-width: 380px;
-            background-color: #fdfdfd;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-container input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            outline: none;
-            transition: box-shadow 0.3s;
-        }
-        .form-container input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(246, 134, 81, 0.3);
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        .buttonen, .buttonun {
-            flex: 1;
-            padding: 12px;
-            background-color: #f68451;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-        .buttonen:hover, .buttonun:hover {
-            background-color: #e67342;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
-        input[type="text"], .output-box {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            height: auto;
-            min-height: 45px;
-            background-color: #ffffff;
-            border: 1px solid #dfe1e5;
-            color: #1a1a1a;
-            border-radius: 8px;
-            outline: none;
-            transition: box-shadow 0.3s;
-        }
-        input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(246, 134, 81, 0.3);
-        }
-        .copy-button {
-            margin-top: 15px;
-            padding: 12px;
-            background-color: #227144;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-        .copy-button:hover {
-            background-color: #1c5d39;
-        }
-        .preview-container {
-            flex: 2;
-            background-color: #f7f8fa;
-            border-radius: 12px;
-            border: 1px solid #dfe1e5;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 350px;
-            height: 80vh;
-        }
-        .preview-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
-        }
-        .description {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #f7f8fa;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            word-break: break-all;
-            min-height: 45px;
-            color: #1a1a1a;
-            transition: box-shadow 0.3s;
-        }
-        .result:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .output-box {
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .output-box:hover {
-            background-color: #e8f0fe;
-        }
-        .alert {
-            color: #ea4335;
-            font-size: 18px;
-            display: none;
-            margin-top: 10px;
-        }
-        .fade-out {
-            animation: fadeOut 3s forwards;
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; display: none; }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes slideIn {
-            0% { transform: translateY(20px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-        @media (max-width: 768px) {
-        .container {
-            flex-direction: column;  /* 改为上下排列，表单在上，预览区在下 */
-            align-items: center;
-        }
-        .form-container {
-            width: 100%;  /* 表单占据全部宽度 */
-        }
-        .preview-container {
-                height: 50vh;  /* 小屏幕时预览区高度减小 */
-            }
-        }
-        @media (max-width: 576px) {
-            .preview-container {
-                height: 45vh;  /* 超小屏幕时预览区高度进一步缩小 */
-            }
-            .form-container input[type="text"],
-            .buttonen,
-            .buttonun,
-            .copy-button {
-                padding: 10px;  /* 减小输入框和按钮的内边距，保持更紧凑布局 */
-            }
-        }
-
-
-        .link-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            background-color: #e9ecef;
-            padding: 10px;
-            border-radius: 8px;
-            width: 100%;
-        }
-        .link-container a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 700;
-            transition: color 0.3s;
-        }
-        .link-container a:hover {
-            color: #0049b0;
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bigo广告Deeplink转换器</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7f8fa;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .flip-card {
+      perspective: 1000px;
+      width: 380px;
+    }
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      backface-visibility: hidden;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .back {
+      transform: rotateY(180deg);
+    }
+    .preview-container {
+      flex: 1;
+      background-color: #f7f8fa;
+      border-radius: 12px;
+      border: 1px solid #dfe1e5;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 480px;
+      height: 80vh;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 8px;
+    }
+    input[type="text"], button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #f68451;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .output-box {
+      word-break: break-word;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 6px;
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Bigo广告Deeplink转换器</h1>
-    </div>
-    <div class="container">
-        <div class="form-container">
-            <div class="image-container">
-                    <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
-                <!-- 左侧弹窗 -->
-    <div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
-        <div style="padding: 10px; text-align: right;">
-            <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">关闭</button>
+  <h1>Bigo广告Deeplink转换器</h1>
+  <div class="container">
+    <div class="flip-card" id="flipCard">
+      <div class="flip-inner">
+        <div class="front">
+          <img src="rosedino.gif" id="open-popup" style="width: 100px; cursor:pointer; display: block; margin: 0 auto 20px;">
+          <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
+          <button onclick="encodeURL()">Encode to Deeplink</button>
+          <button onclick="decodeURL()">Decode from Deeplink</button>
+          <div class="output-box" id="output-box"></div>
+          <button onclick="copyOutput()">复制</button>
         </div>
-        <div style="padding: 20px;">
-      <h3>短链生成器</h3>
-      <input id="popup-url-input" type="text" placeholder="输入原始链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
-      <button onclick="generateShortlinkFromPopup()" style="padding: 10px 20px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
-      <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
+        <div class="back">
+          <h3>短链生成器</h3>
+          <input id="popup-url-input" type="text" placeholder="输入原始链接">
+          <button onclick="generateShortlinkFromPopup()">生成短链</button>
+          <div id="popup-result" style="margin-bottom:10px;"></div>
+        </div>
+      </div>
     </div>
+    <div class="preview-container">
+      <iframe id="preview-iframe"></iframe>
     </div>
+  </div>
+  <script>
+    document.getElementById("open-popup").addEventListener("click", function () {
+      document.getElementById("flipCard").classList.toggle("flipped");
+    });
 
-            </div>
-            <div class="image-container"></div>
-            <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
-            <div class="alert" id="alert-message">!</div>
-            <div class="button-group">
-                <button class="buttonen" onclick="encodeURL()">Encode to Deeplink</button>
-                <button class="buttonun" onclick="decodeURL()">Decode from Deeplink</button>
-            </div>
-            <div class="result">
-                <div>点击结果可跳转</div>
-                <div id="output-box" class="output-box"></div>
-            </div>
-            <button class="copy-button" onclick="copyOutput()">复制</button>
-            <div class="description"></div>
-            <div class="description">用于deeplink互转&Page preview</br>部分活动页限制了端内打开，会无法预览</br>
-            <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank" rel="noopener" >运营后台-活动模板页</a></br>
-            </div>
-        </div>
-        <div class="preview-container" id="preview-container">
-            <iframe id="preview-iframe" src=""></iframe>
-        </div>
-        <div class="link-container">
-            <a href="https://bigotopr.asia/uidjump/" target="_blank">UID跳主页</a>
-            <a href="https://bigotopr.asia/videotopic/" target="_blank">广告水图</a>
-            <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank">运营后台-活动模板</a>
-            <a href="https://bigotopr.asia/w2a/" target="_blank">W2A链接生成器</a>
-        </div>
-    </div>
-    
-<script>
     function encodeURL() {
-        const urlInput = document.getElementById('url-input').value.trim();
-        let fullEncodedURL;
-        if (urlInput.startsWith('bigolive://web?url=')) {
-            fullEncodedURL = urlInput;
-        } else {
-            const encodedURL = encodeURIComponent(urlInput);
-            fullEncodedURL = `bigolive://web?url=${encodedURL}`;
-        }
-        document.getElementById('output-box').textContent = fullEncodedURL;
-        document.getElementById('preview-iframe').src = fullEncodedURL.replace('bigolive://web?url=', '');
-
-        checkForError(urlInput, fullEncodedURL);
-    }
-
-    function generateShortlinkFromPopup() {
-        const url = document.getElementById("popup-url-input").value.trim();
-        if (!url) {
-            alert("请输入原始链接！");
-            return;
-        }
-
-        fetch("https://shortlink.bigotopr.asia/generate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ url: url })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const resultBox = document.getElementById("popup-result");
-            if (data.shortlink) {
-                resultBox.innerHTML = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
-                document.getElementById("preview-iframe").src = data.shortlink;
-            } else {
-                resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
-            }
-        })
-        .catch(error => {
-            document.getElementById("popup-result").textContent = "请求失败：" + error;
-        });
+      const urlInput = document.getElementById('url-input').value.trim();
+      let fullEncodedURL;
+      if (urlInput.startsWith('bigolive://web?url=')) {
+        fullEncodedURL = urlInput;
+      } else {
+        const encodedURL = encodeURIComponent(urlInput);
+        fullEncodedURL = `bigolive://web?url=${encodedURL}`;
+      }
+      document.getElementById('output-box').textContent = fullEncodedURL;
+      document.getElementById('preview-iframe').src = fullEncodedURL.replace('bigolive://web?url=', '');
     }
 
     function decodeURL() {
-        let urlInput = document.getElementById('url-input').value.trim();
-        if (urlInput.startsWith('bigolive://web?url=')) {
-            urlInput = urlInput.replace('bigolive://web?url=', '');
-        }
-        const decodedURL = decodeURIComponent(urlInput);
-        document.getElementById('output-box').textContent = decodedURL;
-        document.getElementById('preview-iframe').src = decodedURL;
+      let urlInput = document.getElementById('url-input').value.trim();
+      if (urlInput.startsWith('bigolive://web?url=')) {
+        urlInput = urlInput.replace('bigolive://web?url=', '');
+      }
+      const decodedURL = decodeURIComponent(urlInput);
+      document.getElementById('output-box').textContent = decodedURL;
+      document.getElementById('preview-iframe').src = decodedURL;
     }
 
-    function checkForError(input, output) {
-        const alertMessage = document.getElementById('alert-message');
-        if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
-            (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
-            alertMessage.style.display = 'block';
-            alertMessage.classList.add('fade-out');
-            setTimeout(() => {
-                alertMessage.style.display = 'none';
-                alertMessage.classList.remove('fade-out');
-            }, 3000);
+    function generateShortlinkFromPopup() {
+      const url = document.getElementById("popup-url-input").value.trim();
+      if (!url) {
+        alert("请输入原始链接！");
+        return;
+      }
+
+      fetch("https://shortlink.bigotopr.asia/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ url: url })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const resultBox = document.getElementById("popup-result");
+        if (data.shortlink) {
+          resultBox.innerHTML = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
+          document.getElementById("preview-iframe").src = data.shortlink;
+        } else {
+          resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
         }
+      })
+      .catch(error => {
+        document.getElementById("popup-result").textContent = "请求失败：" + error;
+      });
     }
 
     function copyOutput() {
-        const text = document.getElementById('output-box').textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Copied successfully!');
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-        });
+      const text = document.getElementById('output-box').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied successfully!');
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
     }
-
-    window.addEventListener('resize', function () {
-        const previewIframe = document.getElementById('preview-iframe');
-        if (window.innerWidth < 768) {
-            previewIframe.style.height = '45vh';
-        } else {
-            previewIframe.style.height = '70vh';
-        }
-    });
-
-    // ✅ 关键部分：确保弹窗绑定在 DOM 完成后执行
-    window.addEventListener('DOMContentLoaded', function () {
-        const openBtn = document.getElementById("open-popup");
-        const closeBtn = document.getElementById("close-popup");
-        const sidePopup = document.getElementById("side-popup");
-
-        if (openBtn && closeBtn && sidePopup) {
-            openBtn.addEventListener("click", function (e) {
-                e.preventDefault();
-                sidePopup.style.display = "block";
-            });
-
-            closeBtn.addEventListener("click", function () {
-                sidePopup.style.display = "none";
-            });
-        } else {
-            console.warn("[❌] 弹窗相关元素未正确加载");
-        }
-    });
-</script>
+  </script>
 </body>
 </html>
