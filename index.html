@@ -332,13 +332,20 @@
     }
 
     function copyAdname() {
-      const adname = document.getElementById("adname-to-copy").textContent;
-      navigator.clipboard.writeText(adname).then(() => {
-          alert(`已复制：${adname}`);
-      }).catch(err => {
-          alert("？");
-          console.error(err);
-      });
+    const shortcode = "your_shortcode_value"; // 假设你已经得到 shortcode 的值
+    const formattedAdname = `📣 广告名拼接：<span style="font-weight:bold;">__${shortcode}__</span>`;
+
+    // 使用正则表达式提取 __${shortcode}__ 部分
+    const shortcodeToCopy = formattedAdname.match(/__([A-Za-z0-9]+)/);
+    const shortcodeValue = shortcodeToCopy ? shortcodeToCopy[0] : ''; // 提取的值
+
+    // 复制短链中的 __${shortcode}__ 部分
+    navigator.clipboard.writeText(shortcodeValue).then(() => {
+        alert(`已复制广告名：${shortcodeValue}`);
+    }).catch(err => {
+        alert("复制失败");
+        console.error(err);
+    });
     }
 
     function generateShortlinkFromPopup() {
