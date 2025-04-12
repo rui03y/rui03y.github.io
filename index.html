@@ -332,21 +332,27 @@
     }
     
     function copyAdname() {
-        const shortcode = "abcdef123";  // 假设你已经得到了 shortcode 的值
-        const formattedAdname = `📣 广告名拼接：<span style="font-weight:bold;">__${shortcode}__</span>`;
+    const shortlink = "https://slink.bigovideo.tv/lifuPP"; // 这里假设你有短链的完整URL
 
-        // 使用正则表达式提取 __${shortcode}__ 部分
-        const shortcodeToCopy = formattedAdname.match(/__([A-Za-z0-9]+)__/);
-        const shortcodeValue = shortcodeToCopy ? shortcodeToCopy[0] : ''; // 提取的值
+    // 使用正则表达式提取短链中 https://slink.bigovideo.tv/ 后面的部分
+    const match = shortlink.match(/https:\/\/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
+    
+    if (match && match[1]) {
+        const shortcode = match[1];  // 提取的6位字母和数字
+        const formattedAdname = `__${shortcode}__`;  // 在两侧拼接 __
 
-        // 复制短链中的 __${shortcode}__ 部分
-        navigator.clipboard.writeText(shortcodeValue).then(() => {
-            alert(`已复制广告名：${shortcodeValue}`);
+        // 复制最终的 shortcode 部分
+        navigator.clipboard.writeText(formattedAdname).then(() => {
+            alert(`已复制广告名：${formattedAdname}`);
         }).catch(err => {
             alert("复制失败");
             console.error(err);
         });
+    } else {
+        alert("未能从短链中提取到正确的短码");
     }
+}
+
 
     function generateShortlinkFromPopup() {
         const url = document.getElementById("popup-url-input").value.trim();
