@@ -376,7 +376,7 @@
                   const shortcode = match && match[1] ? match[1] : '';
 
                   const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
-                  const formattedAdname = `📣 广告名拼接：<span style="font-weight:bold;">__${shortcode}__</span>`;
+                  const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
 
                   resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
 
@@ -385,7 +385,7 @@
               }
                 document.getElementById("preview-iframe").src = data.shortlink;
 
-                    // ✅ 显示复制按钮
+                    // 显示复制按钮
                 document.getElementById("copy-adname-btn").style.display = "inline-block";
             } else {
                 resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
