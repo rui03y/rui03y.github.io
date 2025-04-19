@@ -253,326 +253,85 @@
             color: #0049b0;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="header">
         <h1>Bigo广告Deeplink转换器</h1>
+        <button id="theme-toggle" class="theme-toggle">
+            <span class="theme-icon">🌓</span> 切换主题
+        </button>
     </div>
     <div class="container">
         <div class="form-container">
             <div class="image-container">
-                    <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
+                <img src="rosedino.gif" alt="Loading..." id="open-popup" class="popup-trigger">
                 <!-- 左侧弹窗 -->
-    <div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
-        <div style="padding: 10px; text-align: right;">
-            <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">关闭</button>
-        </div>
-        <div style="padding: 20px;">
-      <h3>短链生成器v1.0-内测版</h3>
-      <input id="popup-url-input" type="text" placeholder="输入活动页链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
-      <button onclick="generateShortlinkFromPopup()" style="padding: 10px 20px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
-        <button onclick="previewShortcodeFromInput()" style="margin-top: 8px; padding: 10px 20px; background: #227144; color: white; border: none; border-radius: 5px;">短链预览</button>
-        <br />
-        <a>短链预览支持__code__,code,完整slink预览</a>
-      <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
-      <button id="copy-adname-btn" onclick="copyAdname()" style="display:none; margin-top:10px; padding: 8px 16px; background:#227144; color:white; border:none; border-radius:5px; cursor:pointer;">
-        复制广告用代码
-    </button>
-    
-    
-    </div>
-    </div>
-
+                <div id="side-popup" class="side-popup">
+                    <div class="popup-header">
+                        <button id="close-popup" class="close-button">×</button>
+                    </div>
+                    <div class="popup-content">
+                        <h3>短链生成器v1.0-内测版</h3>
+                        <input id="popup-url-input" type="text" placeholder="输入活动页链接">
+                        <div class="popup-buttons">
+                            <button onclick="shortlinkGenerator.generateShortlink()" class="generate-button">生成短链</button>
+                            <button onclick="shortlinkGenerator.previewShortcode()" class="preview-button">短链预览</button>
+                        </div>
+                        <p class="popup-hint">短链预览支持__code__,code,完整slink预览</p>
+                        <div id="popup-result" class="popup-result"></div>
+                        <button id="copy-adname-btn" onclick="shortlinkGenerator.copyAdname()" class="copy-adname-button">
+                            复制广告用代码
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="image-container"></div>
-            <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
-            <div class="alert" id="alert-message">!</div>
+            <div class="input-group">
+                <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
+                <div class="alert" id="alert-message">!</div>
+            </div>
             <div class="button-group">
-                <button class="buttonen" onclick="encodeURL()">Encode to Deeplink</button>
-                <button class="buttonun" onclick="decodeURL()">Decode from Deeplink</button>
+                <button class="buttonen">Encode to Deeplink</button>
+                <button class="buttonun">Decode from Deeplink</button>
             </div>
             <div class="result">
-                <div>点击结果可跳转</div>
+                <div class="result-label">点击结果可跳转</div>
                 <div id="output-box" class="output-box"></div>
             </div>
-            <button class="copy-button" onclick="copyOutput()">复制</button>
-            <div class="description"></div>
-            <div class="description">用于deeplink互转&Page preview</br>部分活动页限制了端内打开，会无法预览</br>
-            <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank" rel="noopener" >运营后台-活动模板页</a></br>
+            <button class="copy-button">复制</button>
+            <div class="description">
+                <p>用于deeplink互转&Page preview</p>
+                <p>部分活动页限制了端内打开，会无法预览</p>
+                <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank" rel="noopener" class="admin-link">运营后台-活动模板页</a>
             </div>
         </div>
         <div class="preview-container" id="preview-container">
+            <div class="preview-header">
+                <span class="preview-title">预览区域</span>
+            </div>
             <iframe id="preview-iframe" src=""></iframe>
         </div>
         <div class="link-container">
-            <a href="https://bigotopr.asia/uidjump/" target="_blank">UID跳主页</a>
-            <a href="https://bigotopr.asia/videotopic/" target="_blank">广告水图</a>
-            <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank">运营后台-活动模板</a>
-            <a href="https://bigotopr.asia/w2a/" target="_blank">W2A链接生成器</a>
+            <a href="https://bigotopr.asia/uidjump/" target="_blank" class="tool-link">
+                <span class="link-icon">🔗</span> UID跳主页
+            </a>
+            <a href="https://bigotopr.asia/videotopic/" target="_blank" class="tool-link">
+                <span class="link-icon">🎬</span> 广告水图
+            </a>
+            <a href="https://manage-oss.bigo.tv/bigoActivity/actmachine-v2/list" target="_blank" class="tool-link">
+                <span class="link-icon">📋</span> 运营后台-活动模板
+            </a>
+            <a href="https://bigotopr.asia/w2a/" target="_blank" class="tool-link">
+                <span class="link-icon">🔄</span> W2A链接生成器
+            </a>
         </div>
         <iframe id="login-check-frame" src="" style="display:none;"></iframe>
     </div>
 
-<script>
-    function encodeURL() {
-        const urlInput = document.getElementById('url-input').value.trim();
-        let fullEncodedURL;
-        if (urlInput.startsWith('bigolive://web?url=')) {
-            fullEncodedURL = urlInput;
-        } else {
-            const encodedURL = encodeURIComponent(urlInput);
-            fullEncodedURL = `bigolive://web?url=${encodedURL}`;
-        }
-    
-        // 更新输出框
-        document.getElementById('output-box').textContent = fullEncodedURL;
-    
-        let decodedURL = decodeURIComponent(fullEncodedURL.replace('bigolive://web?url=', ''));
-        document.getElementById('preview-iframe').src = decodedURL;
-    
-        checkForError(urlInput, fullEncodedURL);
-    }
-    
-    function copyAdname() {
-    const popupResult = document.getElementById("popup-result").innerHTML;
-
-    // 使用正则表达式提取短链中 https://slink.bigovideo.tv/ 后面的部分
-    const match = popupResult.match(/https:\/\/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
-    
-    if (match && match[1]) {
-        const shortcode = match[1];  // 提取的6位字母和数字
-        const formattedAdname = `__${shortcode}__`;  // 在两侧拼接 __
-
-        // 复制最终的 shortcode 部分
-        navigator.clipboard.writeText(formattedAdname).then(() => {
-            alert(`已复制广告名：${formattedAdname}`);
-        }).catch(err => {
-            alert("复制失败");
-            console.error(err);
-        });
-    } else {
-        alert("未能从短链中提取到正确的短码");
-    }
-}
-
-
-    function generateShortlinkFromPopup() {
-        const url = document.getElementById("popup-url-input").value.trim();
-        if (!url) {
-            alert("请输入原始链接！");
-            return;
-        }
-
-        fetch("https://shortlink.bigotopr.asia/generate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ url: url })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const resultBox = document.getElementById("popup-result");
-            if (data.shortlink) {
-              if (data.shortlink) {
-                  const match = data.shortlink.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
-                  const shortcode = match && match[1] ? match[1] : '';
-
-                  const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
-                  const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
-
-                  resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
-
-                  // 同时更新 iframe 预览
-                  document.getElementById("preview-iframe").src = data.shortlink;
-              }
-                document.getElementById("preview-iframe").src = data.shortlink;
-
-                    // 显示复制按钮
-                document.getElementById("copy-adname-btn").style.display = "inline-block";
-            } else {
-                resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
-            }
-        })
-        .catch(error => {
-            document.getElementById("popup-result").textContent = "请求失败：" + error;
-        });
-    }
-
-    function decodeURL() {
-        let urlInput = document.getElementById('url-input').value.trim();
-        if (urlInput.startsWith('bigolive://web?url=')) {
-            urlInput = urlInput.replace('bigolive://web?url=', '');
-        }
-        const decodedURL = decodeURIComponent(urlInput);
-        document.getElementById('output-box').textContent = decodedURL;
-        document.getElementById('preview-iframe').src = decodedURL;
-    }
-
-    function checkForError(input, output) {
-        const alertMessage = document.getElementById('alert-message');
-        if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
-            (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
-            alertMessage.style.display = 'block';
-            alertMessage.classList.add('fade-out');
-            setTimeout(() => {
-                alertMessage.style.display = 'none';
-                alertMessage.classList.remove('fade-out');
-            }, 3000);
-        }
-    }
-
-    function copyOutput() {
-        const text = document.getElementById('output-box').textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Copied successfully!');
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-        });
-    }
-    
-    function previewShortcodeFromInput() {
-    const input = document.getElementById("popup-url-input").value.trim();
-    let shortcode = "";
-
-    // ✅ 支持 __abc123__ 形式
-    const matchUnderscore = input.match(/__([A-Za-z0-9]{6})__/);
-    if (matchUnderscore) {
-        shortcode = matchUnderscore[1];
-    }
-
-    // ✅ 支持 abc123 形式
-    else if (/^[A-Za-z0-9]{6}$/.test(input)) {
-        shortcode = input;
-    }
-
-    // ✅ 支持链接形式
-    else {
-        const matchLink = input.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
-        if (matchLink) {
-            shortcode = matchLink[1];
-        }
-    }
-
-    // ✅ 匹配成功则预览
-    if (shortcode) {
-        const previewURL = `https://slink.bigovideo.tv/${shortcode}`;
-        const previewHTML = `
-            🔍 预览链接：<a href="${previewURL}" target="_blank">${previewURL}</a><br>
-            ${formattedAdname}
-        `;
-
-        // 输出到结果区域
-        document.getElementById("preview-iframe").src = previewURL;
-        document.getElementById("popup-result").innerHTML = previewHTML;
-    } else {
-        alert("❌ 无法识别 shortlink code，请输入 __code__ 或 6位code 或 短链链接");
-    }
-}
-    window.addEventListener('resize', function () {
-        const previewIframe = document.getElementById('preview-iframe');
-        if (window.innerWidth < 768) {
-            previewIframe.style.height = '45vh';
-        } else {
-            previewIframe.style.height = '70vh';
-        }
-    });
-
-    window.addEventListener('DOMContentLoaded', function () {
-    const openBtn = document.getElementById("open-popup");
-    const closeBtn = document.getElementById("close-popup");
-    const sidePopup = document.getElementById("side-popup");
-
-    if (openBtn && closeBtn && sidePopup) {
-        openBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-        
-            const iframe = document.getElementById("login-check-frame");
-            const sidePopup = document.getElementById("side-popup");
-        
-            // 先清空 iframe.src，避免缓存影响
-            iframe.src = "";
-        
-            // 设置检测目标页
-            iframe.src = "https://ant.bigo.sg/p/welcome?appId=60";
-        
-            // 等待页面加载完成后进行检查
-            iframe.onload = function () {
-                try {
-                    // 获取 iframe 文档
-                    const iframeDoc = iframe.contentWindow.document;
-
-                    // 检查 img 元素是否存在（根据 class 或其他属性）
-                    const logoImg = iframeDoc.querySelector("img.logo-img");
-
-                    if (logoImg) {
-                        // 如果 logo 图片存在，说明用户已登录
-                        sidePopup.style.display = "block";
-                    } else {
-                        alert("请先登录 ant.bigo.sg 后再使用该功能");
-                    }
-                } catch (error) {
-                    // 捕获跨域问题，防止错误阻塞
-                    console.error("检查登录状态时发生错误:", error);
-                    alert("无法验证登录状态，请重试！");
-                }
-            };
-        
-            // 超时处理（3秒后还没加载说明未登录）
-            setTimeout(() => {
-                if (sidePopup.style.display !== "block") {
-                    alert("请先登录 ant.bigo.sg 后再使用该功能");
-                }
-            }, 3000);
-        });
-
-        closeBtn.addEventListener("click", function () {
-            sidePopup.style.display = "none";
-        });
-    } else {
-        console.warn("[❌] 弹窗相关元素未正确加载");
-    }
-})
-
-    window.addEventListener('DOMContentLoaded', function () {
-            const openBtn = document.getElementById("open-popup");
-            const closeBtn = document.getElementById("close-popup");
-            const sidePopup = document.getElementById("side-popup");
-
-            if (openBtn && closeBtn && sidePopup) {
-                openBtn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                
-                    const iframe = document.getElementById("login-check-frame");
-                    const sidePopup = document.getElementById("side-popup");
-                
-                    // 先清空 iframe.src，避免缓存影响
-                    iframe.src = "";
-                
-                    // 设置检测目标页
-                    iframe.src = "https://ant.bigo.sg/p/welcome?appId=60";
-                
-                    // 成功加载说明已登录
-                    iframe.onload = function () {
-                        sidePopup.style.display = "block";
-                    };
-                
-                    // 超时处理（3秒后还没加载说明未登录）
-                    setTimeout(() => {
-                        if (sidePopup.style.display !== "block") {
-                            alert("请先登录 ant.bigo.sg 后再使用该功能");
-                        }
-                    }, 3000);
-                });
-
-                closeBtn.addEventListener("click", function () {
-                    sidePopup.style.display = "none";
-                });
-            } else {
-                console.warn("[❌] 弹窗相关元素未正确加载");
-            }
-    });
-</script>
+    <script src="js/utils.js"></script>
+    <script src="js/deeplink.js"></script>
+    <script src="js/shortlink.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
