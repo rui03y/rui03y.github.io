@@ -441,12 +441,10 @@
     if (matchUnderscore) {
         shortcode = matchUnderscore[1];
     }
-
     // ✅ 支持 abc123 形式
     else if (/^[A-Za-z0-9]{6}$/.test(input)) {
         shortcode = input;
     }
-
     // ✅ 支持链接形式
     else {
         const matchLink = input.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
@@ -458,6 +456,8 @@
     // ✅ 匹配成功则预览
     if (shortcode) {
         const previewURL = `https://slink.bigovideo.tv/${shortcode}`;
+        const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`; // ✅ 在这里定义
+
         const previewHTML = `
             🔍 预览链接：<a href="${previewURL}" target="_blank">${previewURL}</a><br>
             ${formattedAdname}
@@ -466,10 +466,14 @@
         // 输出到结果区域
         document.getElementById("preview-iframe").src = previewURL;
         document.getElementById("popup-result").innerHTML = previewHTML;
+
+        // 显示复制按钮
+        document.getElementById("copy-adname-btn").style.display = "inline-block";
     } else {
         alert("❌ 无法识别 shortlink code，请输入 __code__ 或 6位code 或 短链链接");
     }
 }
+
     window.addEventListener('resize', function () {
         const previewIframe = document.getElementById('preview-iframe');
         if (window.innerWidth < 768) {
