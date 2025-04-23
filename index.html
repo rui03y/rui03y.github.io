@@ -276,6 +276,9 @@
         <br />
         <a>短链预览支持__code__,code,完整slink预览</a>
       <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
+        <button id="copy-shortlink-btn" onclick="copyShortlink()" style="display:none; margin-top:10px; padding: 8px 16px; background:#1a73e8; color:white; border:none; border-radius:5px; cursor:pointer;">
+    复制短链
+    </button>
       <button id="copy-adname-btn" onclick="copyAdname()" style="display:none; margin-top:10px; padding: 8px 16px; background:#227144; color:white; border:none; border-radius:5px; cursor:pointer;">
         复制广告用代码
     </button>
@@ -356,6 +359,22 @@
     }
 }
 
+    function copyShortlink() {
+        const resultBox = document.getElementById("popup-result");
+        const match = resultBox.innerHTML.match(/https:\/\/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
+    
+        if (match && match[0]) {
+            const fullShortlink = match[0];
+            navigator.clipboard.writeText(fullShortlink).then(() => {
+                alert(`已复制短链：${fullShortlink}`);
+            }).catch(err => {
+                alert("复制失败");
+                console.error(err);
+            });
+        } else {
+            alert("未能识别短链");
+        }
+    }
 
     function generateShortlinkFromPopup() {
         const url = document.getElementById("popup-url-input").value.trim();
@@ -390,6 +409,7 @@
                 document.getElementById("preview-iframe").src = data.shortlink;
 
                     // 显示复制按钮
+                document.getElementById("copy-shortlink-btn").style.display = "inline-block";
                 document.getElementById("copy-adname-btn").style.display = "inline-block";
             } else {
                 resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
