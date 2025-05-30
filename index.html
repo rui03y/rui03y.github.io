@@ -511,44 +511,8 @@
     if (openBtn && closeBtn && sidePopup) {
         openBtn.addEventListener("click", function (e) {
             e.preventDefault();
-        
-            const iframe = document.getElementById("login-check-frame");
-            const sidePopup = document.getElementById("side-popup");
-        
-            // 先清空 iframe.src，避免缓存影响
-            iframe.src = "";
-        
-            // 设置检测目标页
-            iframe.src = "https://ant.bigo.sg/p/welcome?appId=60";
-        
-            // 等待页面加载完成后进行检查
-            iframe.onload = function () {
-                try {
-                    // 获取 iframe 文档
-                    const iframeDoc = iframe.contentWindow.document;
-
-                    // 检查 img 元素是否存在（根据 class 或其他属性）
-                    const logoImg = iframeDoc.querySelector("img.logo-img");
-
-                    if (logoImg) {
-                        // 如果 logo 图片存在，说明用户已登录
-                        sidePopup.style.display = "block";
-                    } else {
-                        alert("请先登录 ant.bigo.sg 后再使用该功能");
-                    }
-                } catch (error) {
-                    // 捕获跨域问题，防止错误阻塞
-                    console.error("检查登录状态时发生错误:", error);
-                    alert("无法验证登录状态，请重试！");
-                }
-            };
-        
-            // 超时处理（3秒后还没加载说明未登录）
-            setTimeout(() => {
-                if (sidePopup.style.display !== "block") {
-                    alert("请先登录 ant.bigo.sg 后再使用该功能");
-                }
-            }, 3000);
+            // 👉 直接打开弹窗，不再做登录检查
+            sidePopup.style.display = "block";
         });
 
         closeBtn.addEventListener("click", function () {
@@ -557,46 +521,7 @@
     } else {
         console.warn("[❌] 弹窗相关元素未正确加载");
     }
-})
-
-    window.addEventListener('DOMContentLoaded', function () {
-            const openBtn = document.getElementById("open-popup");
-            const closeBtn = document.getElementById("close-popup");
-            const sidePopup = document.getElementById("side-popup");
-
-            if (openBtn && closeBtn && sidePopup) {
-                openBtn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                
-                    const iframe = document.getElementById("login-check-frame");
-                    const sidePopup = document.getElementById("side-popup");
-                
-                    // 先清空 iframe.src，避免缓存影响
-                    iframe.src = "";
-                
-                    // 设置检测目标页
-                    iframe.src = "https://ant.bigo.sg/p/welcome?appId=60";
-                
-                    // 成功加载说明已登录
-                    iframe.onload = function () {
-                        sidePopup.style.display = "block";
-                    };
-                
-                    // 超时处理（3秒后还没加载说明未登录）
-                    setTimeout(() => {
-                        if (sidePopup.style.display !== "block") {
-                            alert("请先登录 ant.bigo.sg 后再使用该功能");
-                        }
-                    }, 3000);
-                });
-
-                closeBtn.addEventListener("click", function () {
-                    sidePopup.style.display = "none";
-                });
-            } else {
-                console.warn("[❌] 弹窗相关元素未正确加载");
-            }
-    });
+});
 </script>
 </body>
 </html>
