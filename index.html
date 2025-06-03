@@ -231,8 +231,10 @@
                 padding: 10px;  /* 减小输入框和按钮的内边距，保持更紧凑布局 */
             }
         }
-
-
+        
+        #notes-short{
+            color:#F68451}
+        
         .link-container {
             margin-top: 30px;
             display: flex;
@@ -273,8 +275,8 @@
       <input id="popup-url-input" type="text" placeholder="输入活动页链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
       <button onclick="generateShortlinkFromPopup()" style="padding: 10px 20px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
         <button onclick="previewShortcodeFromInput()" style="margin-top: 8px; padding: 10px 20px; background: #227144; color: white; border: none; border-radius: 5px;">短链预览</button>
-        <br />
-        <a>短链预览支持__code__,code,完整slink预览;服务器容量有限,<br>点击生成按钮后会短暂延迟~</a>
+        <br/>
+        <p id ='notes-short' >短链预览支持__code__,code,完整slink预览;<br>服务器容量有限,点击生成按钮后会短暂延迟~</p>
       <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
         <button id="copy-shortlink-btn" onclick="copyShortlink()" style="display:none; margin-top:10px; padding: 8px 16px; background:#1a73e8; color:white; border:none; border-radius:5px; cursor:pointer;">
     复制短链
