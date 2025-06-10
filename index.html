@@ -445,6 +445,13 @@
         }
     }
 
+    document.getElementById('output-box').addEventListener('click', function() {
+        const text = this.textContent;
+        if (confirm('是否跳转？')) {
+            window.open(text, '_blank');
+        }
+    });
+
     function copyOutput() {
         const text = document.getElementById('output-box').textContent;
         navigator.clipboard.writeText(text).then(() => {
