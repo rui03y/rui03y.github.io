@@ -263,6 +263,18 @@
     .spotlight-effect {
     animation: spotlight 8s ease-in-out;
 }
+        @keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -554,6 +566,23 @@
     }, 10000);
   }
 });
+      function showSpotlight() {
+    document.body.classList.add('show-spotlight');
+    
+    const el = document.getElementById('open-popup'); // 想抖的元素
+    el.classList.add('shake');
+    
+    // 0.4s 后移除 shake 类，允许下次再触发
+    setTimeout(() => el.classList.remove('shake'), 400);
+  }
+
+  let count = localStorage.getItem('spotlightShown') || 0;
+  count = parseInt(count);
+
+  if (count < 3) {
+    showSpotlight();
+    localStorage.setItem('spotlightShown', count + 1);
+  }
 
 </script>
 </body>
