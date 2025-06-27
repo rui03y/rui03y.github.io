@@ -253,7 +253,16 @@
         }
         .link-container a:hover {
             color: #0049b0;
+        
         }
+        @keyframes spotlight {
+    0% { box-shadow: 0 0 0px rgba(255, 200, 0, 0); }
+    50% { box-shadow: 0 0 20px 10px rgba(255, 200, 0, 0.8); }
+    100% { box-shadow: 0 0 0px rgba(255, 200, 0, 0); }
+}
+    .spotlight-effect {
+    animation: spotlight 2s ease-in-out;
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -263,7 +272,7 @@
     </div>
     <div class="container">
         <div class="form-container">
-            <div class="image-container">
+            <div class="image-container" id ="target-element" >
                     <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
                 <!-- 左侧弹窗 -->
     <div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
@@ -531,6 +540,21 @@
         console.warn("[❌] 弹窗相关元素未正确加载");
     }
 });
+    window.addEventListener('DOMContentLoaded', () => {
+  const target = document.getElementById('target-element');
+  const spotlightKey = 'spotlight_shown';
+
+  if (!localStorage.getItem(spotlightKey) && target) {
+    target.classList.add('spotlight-effect');
+    localStorage.setItem(spotlightKey, 'true');
+
+    // 可选：2秒后移除 class，保持干净
+    setTimeout(() => {
+      target.classList.remove('spotlight-effect');
+    }, 2000);
+  }
+});
+
 </script>
 </body>
 </html>
