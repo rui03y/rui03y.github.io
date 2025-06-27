@@ -263,6 +263,16 @@
     .spotlight-effect {
     animation: spotlight 2s ease-in-out;
 }
+        .spotlight-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #d35400;
+    background-color: #fff3e0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border-left: 4px solid #f68451;
+    animation: fadeIn 0.5s ease-in;
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -273,6 +283,10 @@
     <div class="container">
         <div class="form-container">
             <div class="image-container" id ="target-element" >
+                <div id="spotlight-message" class="spotlight-message" style="display: none;">
+        👋0627,这里更新了转短链的工具！(欢迎来用)
+        </div>
+    </div>
                     <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
                 <!-- 左侧弹窗 -->
     <div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
@@ -551,10 +565,31 @@
     // 可选：2秒后移除 class，保持干净
     setTimeout(() => {
       target.classList.remove('spotlight-effect');
-    }, 2000);
+    }, 5000);
   }
 });
+    
+document.addEventListener("DOMContentLoaded", function () {
+    const spotlightKey = "spotlight_shown_v1";
+    const target = document.getElementById("target-element-id");
+    const message = document.getElementById("spotlight-message");
 
+    if (target && !localStorage.getItem(spotlightKey)) {
+        target.classList.add("spotlight-effect");
+        localStorage.setItem(spotlightKey, "true");
+
+        if (message) {
+            message.style.display = "block";
+        }
+
+        setTimeout(() => {
+            target.classList.remove("spotlight-effect");
+            if (message) {
+                message.classList.add("fade-out");  // 渐隐效果
+            }
+        }, 2000);
+    }
+});
 </script>
 </body>
 </html>
