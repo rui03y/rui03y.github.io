@@ -272,7 +272,7 @@
     </div>
     <div class="container">
         <div class="form-container">
-            <div class="image-container" id ="target-element" >
+            <div class="image-container">
                     <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
                 <!-- 左侧弹窗 -->
     <div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
@@ -541,17 +541,17 @@
     }
 });
     window.addEventListener('DOMContentLoaded', () => {
-  const target = document.getElementById('target-element');
+  const target = document.getElementById('open-popup');
   const spotlightKey = 'spotlight_shown';
 
   if (!localStorage.getItem(spotlightKey) && target) {
     target.classList.add('spotlight-effect');
     localStorage.setItem(spotlightKey, 'true');
 
-    // 可选：2秒后移除 class，保持干净
+    // 可选：10秒后移除 class，保持干净
     setTimeout(() => {
       target.classList.remove('spotlight-effect');
-    }, 2000);
+    }, 10000);
   }
 });
 
