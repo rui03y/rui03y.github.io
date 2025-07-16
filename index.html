@@ -274,6 +274,51 @@
 .shake {
   animation: shake 0.4s ease-in-out;
 }
+        
+.toast {
+  animation: fadeInOut 2s ease-in-out forwards;
+  pointer-events: none;
+  background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1);
+  background-size: 200% 200%;
+  animation: fadeInOut 2s ease-in-out forwards, gradient 2s ease infinite;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -374,42 +419,41 @@
     
         checkForError(urlInput, fullEncodedURL);
     }
-    
+        
     function copyAdname() {
     const popupResult = document.getElementById("popup-result").innerHTML;
-
-    // 使用正则表达式提取短链中 https://slink.bigovideo.tv/ 后面的部分
+        // 使用正则表达式提取短链中 https://slink.bigovideo.tv/ 后面的部分
     const match = popupResult.match(/https:\/\/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
 
     if (match && match[1]) {
-        const shortcode = match[1];  // 提取的6位字母和数字
-        const formattedAdname = `__${shortcode}__`;  // 拼接 __code__
+        const shortcode = match[1];
+        const formattedAdname = `__${shortcode}__`;
 
         navigator.clipboard.writeText(formattedAdname).then(() => {
-            showShortlinkToast(`已复制广告名：${formattedAdname}`);
+            showShortlinkToast(`✅ 已复制广告名：${formattedAdname}`);
         }).catch(err => {
             showShortlinkToast("❌ 复制失败", true);
             console.error(err);
         });
     } else {
-        showShortlinkToast("❌ 未能识别短码", true);
+        showShortlinkToast("❌ 无法识别短码", true);  // ✅ 不再用 showFloatingMessage
     }
 }
-    
-    function showShortlinkToast(message, isError = false) {
-    const toast = document.getElementById('shortlink-toast');
-    toast.textContent = message;
-    toast.style.backgroundColor = isError ? 'rgba(234, 67, 53, 0.95)' : 'rgba(34, 113, 68, 0.95)';
-    toast.style.display = 'block';
-    toast.style.opacity = '1';
 
-    setTimeout(() => {
-        toast.style.opacity = '0';
+    
+    function showShortlinkToast(message) {
+        const toast = document.getElementById('shortlink-toast');
+        toast.textContent = message;
+        toast.classList.remove('hidden');     // 显示
+        toast.classList.remove('toast');      // 强制刷新动画
+        void toast.offsetWidth;               // 触发重绘
+        toast.classList.add('toast');         // 重新加回动画类
+    
         setTimeout(() => {
-            toast.style.display = 'none';
-        }, 500);
-    }, 3000); // 显示 3 秒
-}
+            toast.classList.add('hidden');
+        }, 2000); // 与动画时长一致
+    }
+
     
 function showFloatingMessage(message, isError = false) {
     const box = document.getElementById('floating-message');
