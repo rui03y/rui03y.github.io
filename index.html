@@ -335,6 +335,21 @@
             <a href="https://doc.weixin.qq.com/forms/ANsAMQeuAAYAYUAMwY3ALkCND10S1KALf?page=1" target="_blank">我有问题反馈！我有问题反馈！我有问题反馈！</a>
         </div>
         <iframe id="login-check-frame" src="" style="display:none;"></iframe>
+        <div id="floating-message" style="
+        display:none;
+        position:fixed;
+        bottom:30px;
+        left:50%;
+        transform:translateX(-50%);
+        background:rgba(0, 0, 0, 0.8);
+        color:white;
+        padding:10px 20px;
+        border-radius:20px;
+        font-size:14px;
+        z-index:99999;
+        opacity: 0;
+        transition: opacity 1s ease;
+    "></div>
     </div>
 
 <script>
@@ -362,21 +377,34 @@
 
     // 使用正则表达式提取短链中 https://slink.bigovideo.tv/ 后面的部分
     const match = popupResult.match(/https:\/\/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
-    
+
     if (match && match[1]) {
         const shortcode = match[1];  // 提取的6位字母和数字
-        const formattedAdname = `__${shortcode}__`;  // 在两侧拼接 __
+        const formattedAdname = `__${shortcode}__`;  // 拼接 __code__
 
-        // 复制最终的 shortcode 部分
         navigator.clipboard.writeText(formattedAdname).then(() => {
-            alert(`已复制广告名：${formattedAdname}`);
+            showFloatingMessage(`已复制广告名：${formattedAdname}`);
         }).catch(err => {
-            alert("复制失败");
+            showFloatingMessage("❌ 复制失败", true);
             console.error(err);
         });
     } else {
-        alert("未能从短链中提取到正确的短码");
+        showFloatingMessage("❌ 未能识别短码", true);
     }
+}
+function showFloatingMessage(message, isError = false) {
+    const box = document.getElementById('floating-message');
+    box.textContent = message;
+    box.style.backgroundColor = isError ? 'rgba(234, 67, 53, 0.9)' : 'rgba(34, 113, 68, 0.9)';
+    box.style.display = 'block';
+    box.style.opacity = '1';
+
+    setTimeout(() => {
+        box.style.opacity = '0';
+        setTimeout(() => {
+            box.style.display = 'none';
+        }, 1000);
+    }, 4000);
 }
 
     function copyShortlink() {
