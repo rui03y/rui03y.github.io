@@ -592,7 +592,7 @@ function showFloatingMessage(message, isError = false) {
         const text = document.getElementById('output-box').textContent;
         const btn = document.getElementById('copy-button');
         navigator.clipboard.writeText(text).then(() => {
-            btn.textContent = '已复制!';
+            btn.textContent = '已复制到剪贴板~';
             btn.classList.add('copied');
             setTimeout(() => {
                 btn.textContent = '复制';
