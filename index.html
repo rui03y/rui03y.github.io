@@ -140,6 +140,18 @@
         .copy-button:hover {
             background-color: #1c5d39;
         }
+        .copy-button.copied {
+            animation: copyFlash 0.6s ease-in-out, gradient 2s ease infinite;
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1);
+            background-size: 200% 200%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
+        @keyframes copyFlash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
         .preview-container {
             flex: 2;
             background-color: #f7f8fa;
@@ -372,7 +384,7 @@
             </div>
             <div id="main-toast" class="toast fixed top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-2 rounded-xl shadow-2xl z-[10000] hidden">
              </div>
-            <button class="copy-button" onclick="copyOutput()">复制</button>
+            <button id="copy-button" class="copy-button" onclick="copyOutput()">复制</button>
             <div class="description"></div>
             <div class="description">用于deeplink互转&Page preview</br>部分活动页限制了端内打开，会无法预览</br>
             <a href="https://manage-oss.bigo.sg/bigoActivity/actmachine-v2/list" target="_blank" rel="noopener" >运营后台-活动模板页</a></br>
@@ -578,10 +590,21 @@ function showFloatingMessage(message, isError = false) {
 
     function copyOutput() {
         const text = document.getElementById('output-box').textContent;
+        const btn = document.getElementById('copy-button');
         navigator.clipboard.writeText(text).then(() => {
-            showMainToast(`✅ 已复制`);
+            btn.textContent = '已复制!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = '复制';
+                btn.classList.remove('copied');
+            }, 2000);
         }).catch(err => {
-            showMainToast("❌ 复制失败", true);
+            btn.textContent = '复制失败';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = '复制';
+                btn.classList.remove('copied');
+            }, 2000);
             console.error('Failed to copy: ', err);
         });
     }
