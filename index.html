@@ -360,8 +360,6 @@
 
             </div>
             <div class="image-container"></div>
-            <div id="main-toast" class="toast fixed top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-2 rounded-xl shadow-2xl z-[10000] hidden">
-            </div>
             <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
             <div class="alert" id="alert-message">!</div>
             <div class="button-group">
@@ -372,6 +370,8 @@
                 <div>点击结果可跳转</div>
                 <div id="output-box" class="output-box"></div>
             </div>
+            <div id="main-toast" class="toast fixed top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-2 rounded-xl shadow-2xl z-[10000] hidden">
+             </div>
             <button class="copy-button" onclick="copyOutput()">复制</button>
             <div class="description"></div>
             <div class="description">用于deeplink互转&Page preview</br>部分活动页限制了端内打开，会无法预览</br>
@@ -579,7 +579,7 @@ function showFloatingMessage(message, isError = false) {
     function copyOutput() {
         const text = document.getElementById('output-box').textContent;
         navigator.clipboard.writeText(text).then(() => {
-            showMainToast(`✅ 已复制结果：${text}`);
+            showMainToast(`✅ 已复制`);
         }).catch(err => {
             showMainToast("❌ 复制失败", true);
             console.error('Failed to copy: ', err);
