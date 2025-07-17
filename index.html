@@ -360,6 +360,8 @@
 
             </div>
             <div class="image-container"></div>
+            <div id="main-toast" class="toast fixed top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-2 rounded-xl shadow-2xl z-[10000] hidden">
+            </div>
             <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
             <div class="alert" id="alert-message">!</div>
             <div class="button-group">
@@ -486,6 +488,19 @@ function showFloatingMessage(message, isError = false) {
             alert("未能识别短链");
         }
     }
+    function showMainToast(message, isError = false) {
+        const toast = document.getElementById('main-toast');
+        toast.textContent = message;
+        toast.style.backgroundColor = isError ? 'rgba(234, 67, 53, 0.95)' : 'rgba(34, 113, 68, 0.95)';
+        toast.classList.remove('hidden');
+        toast.classList.remove('toast');
+        void toast.offsetWidth;
+        toast.classList.add('toast');
+    
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 4000);
+    }
 
     function generateShortlinkFromPopup() {
         const url = document.getElementById("popup-url-input").value.trim();
@@ -564,11 +579,14 @@ function showFloatingMessage(message, isError = false) {
     function copyOutput() {
         const text = document.getElementById('output-box').textContent;
         navigator.clipboard.writeText(text).then(() => {
-            alert('Copied successfully!');
+            showMainToast(`✅ 已复制结果：${text}`);
         }).catch(err => {
+            showMainToast("❌ 复制失败", true);
             console.error('Failed to copy: ', err);
         });
     }
+
+
     
     function previewShortcodeFromInput() {
     const input = document.getElementById("popup-url-input").value.trim();
