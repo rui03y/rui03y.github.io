@@ -522,48 +522,55 @@ function showFloatingMessage(message, isError = false) {
     }
 
     function generateShortlinkFromPopup() {
-        const url = document.getElementById("popup-url-input").value.trim();
-        if (!url) {
-            alert("请输入原始链接！");
-            return;
-        }
-
-        fetch("https://shortlink.bigotopr.asia/generate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ url: url })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const resultBox = document.getElementById("popup-result");
-            if (data.shortlink) {
-              if (data.shortlink) {
-                  const match = data.shortlink.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
-                  const shortcode = match && match[1] ? match[1] : '';
-
-                  const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
-                  const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
-            
-                  resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
-
-                  // 同时更新 iframe 预览
-                  document.getElementById("preview-iframe").src = data.shortlink;
-              }
-                document.getElementById("preview-iframe").src = data.shortlink;
-
-                    // 显示复制按钮
-                document.getElementById("copy-shortlink-btn").style.display = "inline-block";
-                document.getElementById("copy-adname-btn").style.display = "inline-block";
-            } else {
-                resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
-            }
-        })
-        .catch(error => {
-            document.getElementById("popup-result").textContent = "请求失败：" + error;
-        });
+    const url = document.getElementById("popup-url-input").value.trim();
+    if (!url) {
+        alert("请输入原始链接！");
+        return;
     }
+
+    fetch("https://shortlink.bigotopr.asia/generate", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ url: url })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const resultBox = document.getElementById("popup-result");
+        if (data.shortlink) {
+            const match = data.shortlink.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
+            const shortcode = match && match[1] ? match[1] : '';
+
+            const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
+            const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
+
+            resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
+            document.getElementById("preview-iframe").src = data.shortlink;
+
+            // ✅ 插入 Supabase
+            supabase.from('shortlink_logs')
+              .insert([{ shortcode: shortcode, preview_url: data.shortlink }])
+              .then(({ data, error }) => {
+                  if (error) {
+                      console.error("❌ Supabase 插入失败 (生成短链)：", error);
+                  } else {
+                      console.log("✅ Supabase 插入成功 (生成短链)：", data);
+                  }
+              });
+
+            // 显示复制按钮
+            document.getElementById("copy-shortlink-btn").style.display = "inline-block";
+            document.getElementById("copy-adname-btn").style.display = "inline-block";
+        } else {
+            resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
+        }
+    })
+    .catch(error => {
+        document.getElementById("popup-result").textContent = "请求失败：" + error;
+    });
+}
+
 
     function decodeURL() {
         let urlInput = document.getElementById('url-input').value.trim();
