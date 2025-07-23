@@ -639,41 +639,38 @@ function showFloatingMessage(message, isError = false) {
         }
     }
 
-    // ✅ 匹配成功则预览
+    // ✅ 匹配成功则预览 + 插入 Supabase
     if (shortcode) {
         const previewURL = `https://slink.bigovideo.tv/${shortcode}`;
         
-                // 向 Supabase 插入数据
-        supabase.from('shortlink_logs').insert([
-            {
-                shortcode: shortcode,
-                preview_url: previewURL
-            }
-        ]).then(({ data, error }) => {
-            if (error) {
-                console.error("❌ Supabase 插入失败", error);
-            } else {
-                console.log("✅ Supabase 插入成功", data);
-            }
-        });
-        
-        const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`; // ✅ 在这里定义
+        // ✅ 插入 Supabase（标准 .then 写法）
+        supabase
+          .from('shortlink_logs')
+          .insert([{ shortcode: shortcode, preview_url: previewURL }])
+          .then(({ data, error }) => {
+              if (error) {
+                  console.error("❌ Supabase 插入失败：", error);
+              } else {
+                  console.log("✅ Supabase 插入成功：", data);
+              }
+          });
 
+        const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
         const previewHTML = `
             🔍 预览链接：<a href="${previewURL}" target="_blank">${previewURL}</a><br>
             ${formattedAdname}
         `;
 
-        // 输出到结果区域
+        // 输出到页面
         document.getElementById("preview-iframe").src = previewURL;
         document.getElementById("popup-result").innerHTML = previewHTML;
-
-        // 显示复制按钮
         document.getElementById("copy-adname-btn").style.display = "inline-block";
+
     } else {
         alert("❌ 无法识别 shortlink code，请输入 __code__ 或 6位code 或 短链链接");
     }
 }
+
 
     window.addEventListener('resize', function () {
         const previewIframe = document.getElementById('preview-iframe');
