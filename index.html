@@ -550,7 +550,7 @@ function showFloatingMessage(message, isError = false) {
 
             // ✅ 插入 Supabase
             supabase.from('shortlink_logs')
-              .insert([{ shortcode: shortcode, preview_url: data.shortlink }])
+              .insert([{ shortcode: shortcode, preview_url: data.shortlink,url:url }])
               .then(({ data, error }) => {
                   if (error) {
                       console.error("❌ Supabase 插入失败 (生成短链)：", error);
