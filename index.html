@@ -535,15 +535,12 @@ function showFloatingMessage(message, isError = false) {
               if (data.shortlink) {
                   const match = data.shortlink.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
                   const shortcode = match && match[1] ? match[1] : '';
-                   
+
                   const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
                   const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
-                    
+            
                   resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
-                   if (window.saveShortlinkToSupabase) {
-                        window.saveShortlinkToSupabase(url, data.shortlink);
-                        }
-                    }
+
                   // 同时更新 iframe 预览
                   document.getElementById("preview-iframe").src = data.shortlink;
               }
@@ -715,34 +712,7 @@ function showFloatingMessage(message, isError = false) {
     showSpotlight();
     localStorage.setItem('spotlightShown', count + 1);
   }
-</script>
-    
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script>
-  const supabase = supabase.createClient(
-    'https://bcwzifmqmuwsqrqtmilt.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjd3ppZm1xbXV3c3FycXRtaWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMyMzQ4NzIsImV4cCI6MjA2ODgxMDg3Mn0.RxY5MeL-r4cWzAUcKoKPl_FyZUXM573ZBDNj5dDQsK4'
-  );
 
-  window.saveShortlinkToSupabase = async function(originalUrl, shortUrl) {
-    try {
-      const { error } = await supabase.from('shortlink_logs').insert([
-        {
-          full_url: originalUrl,
-          shortlink: shortUrl
-        }
-      ]);
-      if (error) {
-        console.error('[Supabase] 插入失败:', error);
-      } else {
-        console.log('[Supabase] 插入成功');
-      }
-    } catch (e) {
-      console.error('[Supabase] 异常:', e);
-    }
-  };
 </script>
-
-    
 </body>
 </html>
