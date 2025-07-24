@@ -353,6 +353,7 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjd3ppZm1xbXV3c3FycXRtaWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMyMzQ4NzIsImV4cCI6MjA2ODgxMDg3Mn0.RxY5MeL-r4cWzAUcKoKPl_FyZUXM573ZBDNj5dDQsK4'
   );
 </script>
+
 </head>
 <body>
     <div class="header">
@@ -435,6 +436,35 @@
     </div>
 
 <script>
+    function getOrCreateUserId() {
+  let userId = localStorage.getItem('deeplink_user_id');
+  if (!userId) {
+    userId = crypto.randomUUID();  // 生成唯一 ID
+    localStorage.setItem('deeplink_user_id', userId);
+  }
+  return userId;
+}
+    
+function logConversion(action, inputUrl, outputUrl) {
+  const userId = getOrCreateUserId();
+  supabase.from('conversion_logs')
+    .insert([
+      {
+        user_id: userId,
+        action: action,
+        input_url: inputUrl,
+        output_url: outputUrl
+      }
+    ])
+    .then(({ data, error }) => {
+      if (error) {
+        console.error(`❌ Supabase 插入失败 (${action})`, error);
+      } else {
+        console.log(`✅ Supabase 插入成功 (${action})`, data);
+      }
+    });
+}
+
     function encodeURL() {
         const urlInput = document.getElementById('url-input').value.trim();
         let fullEncodedURL;
@@ -452,6 +482,7 @@
         document.getElementById('preview-iframe').src = decodedURL;
     
         checkForError(urlInput, fullEncodedURL);
+        logConversion("encode", urlInput, fullEncodedURL);
     }
         
     function copyAdname() {
@@ -580,6 +611,7 @@ function showFloatingMessage(message, isError = false) {
         const decodedURL = decodeURIComponent(urlInput);
         document.getElementById('output-box').textContent = decodedURL;
         document.getElementById('preview-iframe').src = decodedURL;
+        logConversion("decode", urlInput, decodedURL);
     }
 
     function checkForError(input, output) {
