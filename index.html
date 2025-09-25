@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <title>Deeplink转换器</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WW55Y6WLX1"></script>
@@ -14,9 +13,9 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta property="og:title" content="内部工具 - Deeplink助手" />
-    <meta property="og:description" content="⚠️ 本工具仅供 Bigo 内部广告运营测试使用，非官方产品" />
-    <meta property="og:url" content="https://bigo.site" />
+    <meta property="og:title" content="命名生成器" />
+    <meta property="og:description" content="这是一个bigo deeplink生成工具" />
+    <meta property="og:url" content="https://bigoug.live" />
     <meta property="og:image" content="https://www.bigo.tv/_nuxt_cdn_/img/logo-b.4bcead.png" />
     <title>Bigo广告Deeplink Generator</title>
     <style>
@@ -560,7 +559,7 @@ function showFloatingMessage(message, isError = false) {
         return;
     }
 
-    fetch("https://shortlink.bigo.site/generate", {
+    fetch("https://shortlink.bigoug.live/generate", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -580,7 +579,18 @@ function showFloatingMessage(message, isError = false) {
             resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
             document.getElementById("preview-iframe").src = data.shortlink;
 
-            // ✅ 只保留显示，不再插入 Supabase
+            // ✅ 插入 Supabase
+            supabase.from('shortlink_logs')
+              .insert([{ shortcode: shortcode, preview_url: data.shortlink,url:url }])
+              .then(({ data, error }) => {
+                  if (error) {
+                      console.error("❌ Supabase 插入失败 (生成短链)：", error);
+                  } else {
+                      console.log("✅ Supabase 插入成功 (生成短链)：", data);
+                  }
+              });
+
+            // 显示复制按钮
             document.getElementById("copy-shortlink-btn").style.display = "inline-block";
             document.getElementById("copy-adname-btn").style.display = "inline-block";
         } else {
@@ -591,7 +601,6 @@ function showFloatingMessage(message, isError = false) {
         document.getElementById("popup-result").textContent = "请求失败：" + error;
     });
 }
-
 
 
     function decodeURL() {
