@@ -577,7 +577,7 @@ function showFloatingMessage(message, isError = false) {
             const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
 
             resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
-            document.getElementById("preview-iframe").src = data.shortlink;
+            document.getElementById("preview-iframe").src = `${data.shortlink}?livelive=1&debug=true&eruda=true?testuid=1600007163`;
 
             // ✅ 插入 Supabase
             supabase.from('shortlink_logs')
@@ -702,7 +702,7 @@ function showFloatingMessage(message, isError = false) {
         `;
 
         // 输出到页面
-        document.getElementById("preview-iframe").src = previewURL;
+        document.getElementById("preview-iframe").src = `${previewURL}?livelive=1&debug=true&eruda=true?testuid=1600007163`;
         document.getElementById("popup-result").innerHTML = previewHTML;
         document.getElementById("copy-adname-btn").style.display = "inline-block";
 
