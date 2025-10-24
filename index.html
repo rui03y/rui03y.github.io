@@ -468,6 +468,7 @@ function logConversion(action, inputUrl, outputUrl) {
     function encodeURL() {
         const urlInput = document.getElementById('url-input').value.trim();
         let fullEncodedURL;
+    
         if (urlInput.startsWith('bigolive://web?url=')) {
             fullEncodedURL = urlInput;
         } else {
@@ -478,17 +479,24 @@ function logConversion(action, inputUrl, outputUrl) {
         // 更新输出框
         document.getElementById('output-box').textContent = fullEncodedURL;
     
+        // 解码出真实页面链接
         let decodedURL = decodeURIComponent(fullEncodedURL.replace('bigolive://web?url=', ''));
-        
-        // ✅ 拼接参数
-        const previewURL = `${decodedURL}?livelive=1&debug=true&eruda=true?testuid=1600007163`;
-        document.getElementById('preview-iframe').src = previewURL;
     
-        console.log("✅ iframe 已加载链接：", previewURL);
+        // ✅ 仅当包含目标前缀时才拼接参数
+        if (decodedURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
+            decodedURL += 'livelive=1&debug=true&eruda=true?testuid=1600007163';
+            console.log('🔧 已拼接调试参数：', decodedURL);
+        } else {
+            console.log('✅ 非目标活动页，保持原始链接：', decodedURL);
+        }
+    
+        // 更新 iframe 预览
+        document.getElementById('preview-iframe').src = decodedURL;
     
         checkForError(urlInput, fullEncodedURL);
         logConversion("encode", urlInput, fullEncodedURL);
     }
+
         
     function copyAdname() {
     const popupResult = document.getElementById("popup-result").innerHTML;
