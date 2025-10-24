@@ -588,22 +588,27 @@ function showFloatingMessage(message, isError = false) {
 
             const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
             const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
-
             resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
-            document.getElementById("preview-iframe").src = `${data.shortlink}?livelive=1&debug=true&eruda=true?testuid=1600007163`;
 
-            // ✅ 插入 Supabase
+            // ✅ 拼接参数逻辑
+            let previewURL = data.shortlink;
+            if (previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
+                previewURL += 'livelive=1&debug=true&eruda=true?testuid=1600007163';
+                console.log('🔧 已拼接调试参数（短链预览）：', previewURL);
+            } else {
+                console.log('✅ 非目标活动页短链，保持原始预览：', previewURL);
+            }
+
+            document.getElementById("preview-iframe").src = previewURL;
+
+            // ✅ Supabase 记录
             supabase.from('shortlink_logs')
-              .insert([{ shortcode: shortcode, preview_url: data.shortlink,url:url }])
+              .insert([{ shortcode: shortcode, preview_url: previewURL, url: url }])
               .then(({ data, error }) => {
-                  if (error) {
-                      console.error("❌ Supabase 插入失败 (生成短链)：", error);
-                  } else {
-                      console.log("✅ Supabase 插入成功 (生成短链)：", data);
-                  }
+                  if (error) console.error("❌ Supabase 插入失败 (生成短链)：", error);
+                  else console.log("✅ Supabase 插入成功 (生成短链)：", data);
               });
 
-            // 显示复制按钮
             document.getElementById("copy-shortlink-btn").style.display = "inline-block";
             document.getElementById("copy-adname-btn").style.display = "inline-block";
         } else {
@@ -670,42 +675,38 @@ function showFloatingMessage(message, isError = false) {
 
 
     
-    function previewShortcodeFromInput() {
+function previewShortcodeFromInput() {
     console.log("[DEBUG] 点击了短链预览按钮");
     const input = document.getElementById("popup-url-input").value.trim();
     let shortcode = "";
 
-    // ✅ 支持 __abc123__ 形式
     const matchUnderscore = input.match(/__([A-Za-z0-9]{6})__/);
     if (matchUnderscore) {
         shortcode = matchUnderscore[1];
-    }
-    // ✅ 支持 abc123 形式
-    else if (/^[A-Za-z0-9]{6}$/.test(input)) {
+    } else if (/^[A-Za-z0-9]{6}$/.test(input)) {
         shortcode = input;
-    }
-    // ✅ 支持链接形式
-    else {
+    } else {
         const matchLink = input.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
-        if (matchLink) {
-            shortcode = matchLink[1];
-        }
+        if (matchLink) shortcode = matchLink[1];
     }
 
-    // ✅ 匹配成功则预览 + 插入 Supabase
     if (shortcode) {
-        const previewURL = `https://slink.bigovideo.tv/${shortcode}`;
-        
-        // ✅ 插入 Supabase（标准 .then 写法）
+        let previewURL = `https://slink.bigovideo.tv/${shortcode}`;
+
+        // ✅ 拼接参数逻辑
+        if (previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
+            previewURL += 'livelive=1&debug=true&eruda=true?testuid=1600007163';
+            console.log('🔧 已拼接调试参数（短链预览输入）：', previewURL);
+        } else {
+            console.log('✅ 非目标活动页短链输入，保持原始链接：', previewURL);
+        }
+
         supabase
           .from('shortlink_logs')
           .insert([{ shortcode: shortcode, preview_url: previewURL }])
           .then(({ data, error }) => {
-              if (error) {
-                  console.error("❌ Supabase 插入失败：", error);
-              } else {
-                  console.log("✅ Supabase 插入成功：", data);
-              }
+              if (error) console.error("❌ Supabase 插入失败：", error);
+              else console.log("✅ Supabase 插入成功：", data);
           });
 
         const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
@@ -713,18 +714,14 @@ function showFloatingMessage(message, isError = false) {
             🔍 预览链接：<a href="${previewURL}" target="_blank">${previewURL}</a><br>
             ${formattedAdname}
         `;
-
-        // 输出到页面
-        document.getElementById("preview-iframe").src = `${previewURL}?livelive=1&debug=true&eruda=true?testuid=1600007163`;
+        document.getElementById("preview-iframe").src = previewURL;
         document.getElementById("popup-result").innerHTML = previewHTML;
         document.getElementById("copy-adname-btn").style.display = "inline-block";
-
     } else {
         alert("❌ 无法识别 shortlink code，请输入 __code__ 或 6位code 或 短链链接");
     }
 }
-
-
+    
     window.addEventListener('resize', function () {
         const previewIframe = document.getElementById('preview-iframe');
         if (window.innerWidth < 768) {
