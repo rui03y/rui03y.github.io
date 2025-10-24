@@ -466,36 +466,37 @@ function logConversion(action, inputUrl, outputUrl) {
 }
 
     function encodeURL() {
-        const urlInput = document.getElementById('url-input').value.trim();
-        let fullEncodedURL;
-    
-        if (urlInput.startsWith('bigolive://web?url=')) {
-            fullEncodedURL = urlInput;
-        } else {
-            const encodedURL = encodeURIComponent(urlInput);
-            fullEncodedURL = `bigolive://web?url=${encodedURL}`;
-        }
-    
-        // 更新输出框
-        document.getElementById('output-box').textContent = fullEncodedURL;
-    
-        // 解码出真实页面链接
-        let decodedURL = decodeURIComponent(fullEncodedURL.replace('bigolive://web?url=', ''));
-    
-        // ✅ 仅当包含目标前缀时才拼接参数
-        if (decodedURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
-            decodedURL += 'livelive=1&debug=true&eruda=true?testuid=1600007163';
-            console.log('🔧 已拼接调试参数：', decodedURL);
-        } else {
-            console.log('✅ 非目标活动页，保持原始链接：', decodedURL);
-        }
-    
-        // 更新 iframe 预览
-        document.getElementById('preview-iframe').src = decodedURL;
-    
-        checkForError(urlInput, fullEncodedURL);
-        logConversion("encode", urlInput, fullEncodedURL);
+    const urlInput = document.getElementById('url-input').value.trim();
+    let fullEncodedURL;
+
+    if (urlInput.startsWith('bigolive://web?url=')) {
+        fullEncodedURL = urlInput;
+    } else {
+        const encodedURL = encodeURIComponent(urlInput);
+        fullEncodedURL = `bigolive://web?url=${encodedURL}`;
     }
+
+    // 更新输出框
+    document.getElementById('output-box').textContent = fullEncodedURL;
+
+    // 解码出真实页面链接
+    let decodedURL = decodeURIComponent(fullEncodedURL.replace('bigolive://web?url=', ''));
+
+    // ✅ 当不包含指定前缀时拼接参数
+    if (!decodedURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
+        decodedURL += (decodedURL.includes('?') ? '&' : '?') + 'livelive=1&debug=true&eruda=true?testuid=1600007163';
+        console.log('🔧 已拼接调试参数：', decodedURL);
+    } else {
+        console.log('✅ 已检测到目标活动页，不拼接参数：', decodedURL);
+    }
+
+    // 更新 iframe 预览
+    document.getElementById('preview-iframe').src = decodedURL;
+
+    checkForError(urlInput, fullEncodedURL);
+    logConversion("encode", urlInput, fullEncodedURL);
+}
+
 
         
     function copyAdname() {
@@ -565,7 +566,7 @@ function showFloatingMessage(message, isError = false) {
         }
     }
 
-    function generateShortlinkFromPopup() {
+   function generateShortlinkFromPopup() {
     const url = document.getElementById("popup-url-input").value.trim();
     if (!url) {
         alert("请输入原始链接！");
@@ -590,13 +591,13 @@ function showFloatingMessage(message, isError = false) {
             const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
             resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
 
-            // ✅ 拼接参数逻辑
+            // ✅ 拼接参数逻辑（反向条件）
             let previewURL = data.shortlink;
-            if (previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
-                previewURL += 'livelive=1&debug=true&eruda=true?testuid=1600007163';
+            if (!previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
+                previewURL += (previewURL.includes('?') ? '&' : '?') + 'livelive=1&debug=true&eruda=true?testuid=1600007163';
                 console.log('🔧 已拼接调试参数（短链预览）：', previewURL);
             } else {
-                console.log('✅ 非目标活动页短链，保持原始预览：', previewURL);
+                console.log('✅ 检测到指定活动页短链，不拼接参数：', previewURL);
             }
 
             document.getElementById("preview-iframe").src = previewURL;
@@ -693,12 +694,12 @@ function previewShortcodeFromInput() {
     if (shortcode) {
         let previewURL = `https://slink.bigovideo.tv/${shortcode}`;
 
-        // ✅ 拼接参数逻辑
-        if (previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
-            previewURL += 'livelive=1&debug=true&eruda=true?testuid=1600007163';
+        // ✅ 拼接参数逻辑（反向条件）
+        if (!previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
+            previewURL += (previewURL.includes('?') ? '&' : '?') + 'livelive=1&debug=true&eruda=true?testuid=1600007163';
             console.log('🔧 已拼接调试参数（短链预览输入）：', previewURL);
         } else {
-            console.log('✅ 非目标活动页短链输入，保持原始链接：', previewURL);
+            console.log('✅ 检测到指定活动页短链输入，不拼接参数：', previewURL);
         }
 
         supabase
