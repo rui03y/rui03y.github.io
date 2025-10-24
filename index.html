@@ -479,7 +479,12 @@ function logConversion(action, inputUrl, outputUrl) {
         document.getElementById('output-box').textContent = fullEncodedURL;
     
         let decodedURL = decodeURIComponent(fullEncodedURL.replace('bigolive://web?url=', ''));
-        document.getElementById('preview-iframe').src = decodedURL;
+        
+        // ✅ 拼接参数
+        const previewURL = `${decodedURL}?livelive=1&debug=true&eruda=true?testuid=1600007163`;
+        document.getElementById('preview-iframe').src = previewURL;
+    
+        console.log("✅ iframe 已加载链接：", previewURL);
     
         checkForError(urlInput, fullEncodedURL);
         logConversion("encode", urlInput, fullEncodedURL);
