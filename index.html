@@ -1,818 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7173300000468272"
-     crossorigin="anonymous"></script>
-    <title>Deeplink转换器</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WW55Y6WLX1"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bigo Deeplink Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-WW55Y6WLX1');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <meta property="og:title" content="命名生成器" />
-    <meta property="og:description" content="这是一个bigo deeplink生成工具" />
-    <meta property="og:url" content="https://bigoug.live" />
-    <meta property="og:image" content="https://www.bigo.tv/_nuxt_cdn_/img/logo-b.4bcead.png" />
-    <title>Bigo广告Deeplink Generator</title>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f7f8fa;
-            color: #1a1a1a;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeIn 1s ease-in;
-        }
-        .container {
-            width: 100%;
-            max-width: 850px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;  /* 允许子元素换行，保证移动端自适应 */
-            justify-content: space-between;            
-            gap: 20px;
-            animation: slideIn 0.5s ease-out;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .image-container {
-            width: 100%;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .image-container img {
-            width: 40%;
-            height: auto;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .image-container img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        .form-container {
-            flex: 1;
-            max-width: 380px;
-            background-color: #fdfdfd;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-container input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            outline: none;
-            transition: box-shadow 0.3s;
-        }
-        .form-container input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(246, 134, 81, 0.3);
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        .buttonen, .buttonun {
-            flex: 1;
-            padding: 12px;
-            background-color: #f68451;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-        .buttonen:hover, .buttonun:hover {
-            background-color: #e67342;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        }
-        input[type="text"], .output-box {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            height: auto;
-            min-height: 45px;
-            background-color: #ffffff;
-            border: 1px solid #dfe1e5;
-            color: #1a1a1a;
-            border-radius: 8px;
-            outline: none;
-            transition: box-shadow 0.3s;
-        }
-        input[type="text"]:focus {
-            box-shadow: 0 0 0 4px rgba(246, 134, 81, 0.3);
-        }
-        .copy-button {
-            margin-top: 15px;
-            padding: 12px;
-            background-color: #227144;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-        .copy-button:hover {
-            background-color: #1c5d39;
-        }
-        .copy-button.copied {
-            animation: copyFlash 0.6s ease-in-out, gradient 2s ease infinite;
-            background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1);
-            background-size: 200% 200%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-        }
-
-        @keyframes copyFlash {
-            0% { transform: scale(1); background-position: 0% 50%; }
-            50% { transform: scale(1.05); background-position: 100% 50%; }
-            100% { transform: scale(1); background-position: 0% 50%; }
-        }
-
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              ocean: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+              },
+              aqua: {
+                50: '#f0fdfa',
+                100: '#ccfbf1',
+                200: '#99f6e4',
+                300: '#5eead4',
+                400: '#2dd4bf',
+                500: '#14b8a6',
+                600: '#0d9488',
+                700: '#0f766e',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.5s ease-out',
+              'bounce-slow': 'bounce 3s infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(20px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              }
             }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-        .preview-container {
-            flex: 2;
-            background-color: #f7f8fa;
-            border-radius: 12px;
-            border: 1px solid #dfe1e5;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 350px;
-            height: 80vh;
-        }
-        .preview-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 8px;
-        }
-        .description {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
-            text-align: center;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #f7f8fa;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            word-break: break-all;
-            min-height: 45px;
-            color: #1a1a1a;
-            transition: box-shadow 0.3s;
-        }
-        .result:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .output-box {
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .output-box:hover {
-            background-color: #e8f0fe;
-        }
-        .alert {
-            color: #ea4335;
-            font-size: 18px;
-            display: none;
-            margin-top: 10px;
-        }
-        .fade-out {
-            animation: fadeOut 3s forwards;
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            100% { opacity: 0; display: none; }
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes slideIn {
-            0% { transform: translateY(20px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-        @media (max-width: 768px) {
-        .container {
-            flex-direction: column;  /* 改为上下排列，表单在上，预览区在下 */
-            align-items: center;
-        }
-        .form-container {
-            width: 100%;  /* 表单占据全部宽度 */
-        }
-        .preview-container {
-                height: 50vh;  /* 小屏幕时预览区高度减小 */
-            }
-        }
-        @media (max-width: 576px) {
-            .preview-container {
-                height: 45vh;  /* 超小屏幕时预览区高度进一步缩小 */
-            }
-            .form-container input[type="text"],
-            .buttonen,
-            .buttonun,
-            .copy-button {
-                padding: 10px;  /* 减小输入框和按钮的内边距，保持更紧凑布局 */
-            }
-        }
-        
-        #notes-short{
-            color:#F68451}
-        
-        .link-container {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            background-color: #e9ecef;
-            padding: 10px;
-            border-radius: 8px;
-            width: 100%;
-        }
-        .link-container a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 700;
-            transition: color 0.3s;
-        }
-        .link-container a:hover {
-            color: #0049b0;
-        
-        }
-        @keyframes spotlight {
-    0% { box-shadow: 0 0 0px rgba(255, 200, 0, 0); }
-    50% { box-shadow: 0 0 20px 10px rgba(255, 200, 0, 0.8); }
-    100% { box-shadow: 0 0 0px rgba(255, 200, 0, 0); }
-}
-    .spotlight-effect {
-    animation: spotlight 8s ease-in-out;
-}
-        @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-
-.shake {
-  animation: shake 0.4s ease-in-out;
-}
-        
-.toast {
-  animation: fadeInOut 3s ease-in-out forwards;
-  pointer-events: none;
-  background: linear-gradient(135deg, #FF6B6B, #4ECDC4, #45B7D1);
-  background-size: 200% 200%;
-  animation: fadeInOut 4s ease-in-out forwards, gradient 2s ease infinite;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  font-weight: bold;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.9);
-  }
-  10% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  90% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.9);
-  }
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const supabase = window.supabase.createClient(
-    'https://bcwzifmqmuwsqrqtmilt.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjd3ppZm1xbXV3c3FycXRtaWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMyMzQ4NzIsImV4cCI6MjA2ODgxMDg3Mn0.RxY5MeL-r4cWzAUcKoKPl_FyZUXM573ZBDNj5dDQsK4'
-  );
-</script>
-
-</head>
-<body>
-    <div class="header">
-        <h1>Bigo广告Deeplink转换器</h1>
-    </div>
-    <div class="container">
-        <div class="form-container">
-            <div class="image-container">
-                    <img src="rosedino.gif" alt="Loading..." id="open-popup" style="cursor:pointer;">
-                <!-- 左侧弹窗 -->
-    <div id="side-popup" style="display:none; position:fixed; top:0; left:0; width:360px; height:100%; background:#fff; box-shadow: 4px 0 15px rgba(0,0,0,0.2); z-index:9999; transition: transform 0.3s ease;">
-        <div id="shortlink-toast" class="toast fixed top-3 left-3 text-white px-4 py-2 rounded-xl shadow-2xl z-[10000] hidden">
-          取消弹窗啦，复制消息会显示在这里嗷~
-        </div>
-        <div style="padding: 10px; text-align: right;">
-            <button id="close-popup" style="padding: 6px 12px; background: #f68451; color: white; border: none; border-radius: 5px; cursor: pointer;">关闭</button>
-        </div>
-        <div style="padding: 20px;">
-      <h3>短链生成器v1.0</h3>
-      <input id="popup-url-input" type="text" placeholder="输入活动页链接" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;">
-      <button onclick="generateShortlinkFromPopup()" style="padding: 10px 20px; background: #f68451; color: white; border: none; border-radius: 5px;">生成短链</button>
-        <button onclick="previewShortcodeFromInput()" style="margin-top: 8px; padding: 10px 20px; background: #227144; color: white; border: none; border-radius: 5px;">短链预览</button>
-        <br/>
-       <p>短链预览支持__code__,code,完整slink预览;</p><p id ='notes-short' >服务器容量有限,点击生成按钮后会短暂延迟</p>
-      <div id="popup-result" style="margin-top: 15px; word-break: break-all; font-weight: bold;"></div>
-        <button id="copy-shortlink-btn" onclick="copyShortlink()" style="display:none; margin-top:10px; padding: 8px 16px; background:#1a73e8; color:white; border:none; border-radius:5px; cursor:pointer;">
-    复制短链
-    </button>
-      <button id="copy-adname-btn" onclick="copyAdname()" style="display:none; margin-top:10px; padding: 8px 16px; background:#227144; color:white; border:none; border-radius:5px; cursor:pointer;">
-        复制广告用代码
-    </button>
-    
-    
-    </div>
-    </div>
-
-            </div>
-            <div class="image-container"></div>
-            <input type="text" id="url-input" placeholder="运营后台活动http开头的link or bigolive://web?url=">
-            <div class="alert" id="alert-message">!</div>
-            <div class="button-group">
-                <button class="buttonen" onclick="encodeURL()">Encode to Deeplink</button>
-                <button class="buttonun" onclick="decodeURL()">Decode from Deeplink</button>
-            </div>
-            <div class="result">
-                <div>点击结果可跳转</div>
-                <div id="output-box" class="output-box"></div>
-            </div>
-            <div id="main-toast" class="toast fixed top-3 left-1/2 transform -translate-x-1/2 text-white px-4 py-2 rounded-xl shadow-2xl z-[10000] hidden">
-             </div>
-
-            <button id="copy-button" class="copy-button" onclick="copyOutput()">复制</button>
-            <div class="description"></div>
-            <div class="description">用于deeplink互转&Page preview</br>部分活动页限制了端内打开，会无法预览</br>
-            <a href="https://manage-oss.bigo.sg/bigoActivity/actmachine-v2/list" target="_blank" rel="noopener" >运营后台-活动模板页</a></br>
-            </div>
-        </div>
-        <div class="preview-container" id="preview-container">
-            <iframe id="preview-iframe" src=""></iframe>
-        </div>
-        <div class="link-container">
-            <a href="https://doc.weixin.qq.com/forms/ANsAMQeuAAYAYUAMwY3ALkCND10S1KALf?page=1" target="_blank">我有问题反馈！我有问题反馈！我有问题反馈！</a>
-        </div>
-        <iframe id="login-check-frame" src="" style="display:none;"></iframe>
-        <div id="floating-message" style="
-        display:none;
-        position:fixed;
-        bottom:30px;
-        left:50%;
-        transform:translateX(-50%);
-        background:rgba(0, 0, 0, 0.8);
-        color:white;
-        padding:10px 20px;
-        border-radius:20px;
-        font-size:14px;
-        z-index:99999;
-        opacity: 0;
-        transition: opacity 2s ease;
-    "></div>
-    </div>
-
-<script>
-    function getOrCreateUserId() {
-  let userId = localStorage.getItem('deeplink_user_id');
-  if (!userId) {
-    userId = crypto.randomUUID();  // 生成唯一 ID
-    localStorage.setItem('deeplink_user_id', userId);
-  }
-  return userId;
-}
-    
-function logConversion(action, inputUrl, outputUrl) {
-  const userId = getOrCreateUserId();
-  supabase.from('conversion_logs')
-    .insert([
-      {
-        user_id: userId,
-        action: action,
-        input_url: inputUrl,
-        output_url: outputUrl
-      }
-    ])
-    .then(({ data, error }) => {
-      if (error) {
-        console.error(`❌ Supabase 插入失败 (${action})`, error);
-      } else {
-        console.log(`✅ Supabase 插入成功 (${action})`, data);
-      }
-    });
-}
-
-    function encodeURL() {
-    const urlInput = document.getElementById('url-input').value.trim();
-    let fullEncodedURL;
-
-    if (urlInput.startsWith('bigolive://web?url=')) {
-        fullEncodedURL = urlInput;
-    } else {
-        const encodedURL = encodeURIComponent(urlInput);
-        fullEncodedURL = `bigolive://web?url=${encodedURL}`;
-    }
-
-    // 更新输出框
-    document.getElementById('output-box').textContent = fullEncodedURL;
-
-    // 解码出真实页面链接
-    let decodedURL = decodeURIComponent(fullEncodedURL.replace('bigolive://web?url=', ''));
-
-    // ✅ 当不包含指定前缀时拼接参数
-    if (!decodedURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
-        decodedURL += (decodedURL.includes('?') ? '&' : '?') + 'livelive=1&debug=true&eruda=true?testuid=1600007163';
-        console.log('🔧 已拼接调试参数：', decodedURL);
-    } else {
-        console.log('✅ 已检测到目标活动页，不拼接参数：', decodedURL);
-    }
-
-    // 更新 iframe 预览
-    document.getElementById('preview-iframe').src = decodedURL;
-
-    checkForError(urlInput, fullEncodedURL);
-    logConversion("encode", urlInput, fullEncodedURL);
-}
-
-
-        
-    function copyAdname() {
-    const popupResult = document.getElementById("popup-result").innerHTML;
-        // 使用正则表达式提取短链中 https://slink.bigovideo.tv/ 后面的部分
-    const match = popupResult.match(/https:\/\/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
-
-    if (match && match[1]) {
-        const shortcode = match[1];
-        const formattedAdname = `__${shortcode}__`;
-
-        navigator.clipboard.writeText(formattedAdname).then(() => {
-            showShortlinkToast(`✅ 已复制广告名：${formattedAdname}`);
-        }).catch(err => {
-            showShortlinkToast("❌ 复制失败", true);
-            console.error(err);
-        });
-    } else {
-        showShortlinkToast("❌ 无法识别短码", true);  // ✅ 不再用 showFloatingMessage
-    }
-}
-
-    
-    function showShortlinkToast(message) {
-        const toast = document.getElementById('shortlink-toast');
-        toast.textContent = message;
-        toast.classList.remove('hidden');     // 显示
-        toast.classList.remove('toast');      // 强制刷新动画
-        void toast.offsetWidth;               // 触发重绘
-        toast.classList.add('toast');         // 重新加回动画类
-    
-        setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 4000); // 与动画时长一致
-    }
-
-    
-function showFloatingMessage(message, isError = false) {
-    const box = document.getElementById('floating-message');
-    box.textContent = message;
-    box.style.backgroundColor = isError ? 'rgba(234, 67, 53, 0.9)' : 'rgba(34, 113, 68, 0.9)';
-    box.style.display = 'block';
-    box.style.opacity = '1';
-
-    setTimeout(() => {
-        box.style.opacity = '0';
-        setTimeout(() => {
-            box.style.display = 'none';
-        }, 1000);
-    }, 4000);
-}
-
-    function copyShortlink() {
-        const resultBox = document.getElementById("popup-result");
-        const match = resultBox.innerHTML.match(/https:\/\/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
-    
-        if (match && match[0]) {
-            const fullShortlink = match[0];
-            navigator.clipboard.writeText(fullShortlink).then(() => {
-                showShortlinkToast(`✅ 已复制短链：${fullShortlink}`);
-            }).catch(err => {
-                showShortlinkToast("❌ 复制失败", true);
-                console.error(err);
-            });
-        } else {
-            alert("未能识别短链");
-        }
-    }
-
-   function generateShortlinkFromPopup() {
-    const url = document.getElementById("popup-url-input").value.trim();
-    if (!url) {
-        alert("请输入原始链接！");
-        return;
-    }
-
-    fetch("https://api.bigoug.live/generate", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
+          },
         },
-        body: JSON.stringify({ url: url })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const resultBox = document.getElementById("popup-result");
-
-        console.log("返回数据：", data);
-
-        // 🔥 正确解析接口返回结构
-        if (
-            data.code === 0 &&
-            data.data &&
-            data.data.row &&
-            data.data.row.length > 0
-        ) {
-            const row = data.data.row[0];
-
-            const shortUrl = row.shortUrl;
-            const deeplink = row.deeplink;
-
-            // 🔥 正确提取短码
-            const match = shortUrl.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
-            const shortcode = match && match[1] ? match[1] : '';
-
-            // 显示短链 + 广告名
-            resultBox.innerHTML = `
-                ✅ 短链：<a href="${shortUrl}" target="_blank">${shortUrl}</a><br>
-                📣 广告信息拼接用：<b>__${shortcode}__</b>
-            `;
-
-            // 🔥 iframe 预览逻辑
-            let previewURL = shortUrl;
-            if (!previewURL.includes('?')) {
-                previewURL += '?livelive=1&debug=true&eruda=true?testuid=1600007163';
-            }
-            document.getElementById("preview-iframe").src = previewURL;
-
-            // 🔥 让按钮出现
-            document.getElementById("copy-shortlink-btn").style.display = "inline-block";
-            document.getElementById("copy-adname-btn").style.display = "inline-block";
-
-            // -----------------------------------------------------
-            // 🔥 保留 Supabase 插入日志 —— 已修复字段并可正常写入
-            // -----------------------------------------------------
-            supabase
-                .from('shortlink_logs')
-                .insert([
-                    {
-                        shortcode: shortcode,
-                        preview_url: previewURL,
-                        url: url
-                    }
-                ])
-                .then(({ data, error }) => {
-                    if (error) {
-                        console.error("❌ Supabase 插入失败：", error);
-                    } else {
-                        console.log("✅ Supabase 插入成功：", data);
-                    }
-                });
-
-        } else {
-            resultBox.innerHTML = `❌ 生成失败：接口异常`;
-        }
-    })
-    .catch(error => {
-        document.getElementById("popup-result").textContent = "请求失败：" + error;
-    });
+      }
+    </script>
+    <style>
+      body {
+        /* Updated Gradient: Soft Blue to Fresh Cyan/Teal */
+        background: linear-gradient(135deg, #bae6fd 0%, #a5f3fc 50%, #5eead4 100%);
+        min-height: 100vh;
+        background-attachment: fixed;
+      }
+      
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.05); 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(14, 165, 233, 0.3); 
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(14, 165, 233, 0.5); 
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.87.1"
+  }
 }
-
-
-
-    function decodeURL() {
-        let urlInput = document.getElementById('url-input').value.trim();
-        if (urlInput.startsWith('bigolive://web?url=')) {
-            urlInput = urlInput.replace('bigolive://web?url=', '');
-        }
-        const decodedURL = decodeURIComponent(urlInput);
-        document.getElementById('output-box').textContent = decodedURL;
-        document.getElementById('preview-iframe').src = decodedURL;
-        logConversion("decode", urlInput, decodedURL);
-    }
-
-    function checkForError(input, output) {
-        const alertMessage = document.getElementById('alert-message');
-        if ((input.startsWith('bigolive://') && output.startsWith('bigolive://')) ||
-            (!input.startsWith('bigolive://') && !output.startsWith('bigolive://'))) {
-            alertMessage.style.display = 'block';
-            alertMessage.classList.add('fade-out');
-            setTimeout(() => {
-                alertMessage.style.display = 'none';
-                alertMessage.classList.remove('fade-out');
-            }, 3000);
-        }
-    }
-
-    document.getElementById('output-box').addEventListener('click', function() {
-        const text = this.textContent;
-        if (confirm('是否跳转？')) {
-            window.open(text, '_blank');
-        }
-    });
-
-    function copyOutput() {
-        const text = document.getElementById('output-box').textContent;
-        const btn = document.getElementById('copy-button');
-        navigator.clipboard.writeText(text).then(() => {
-            btn.textContent = '已复制到剪贴板~';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.textContent = '复制';
-                btn.classList.remove('copied');
-            }, 2000);
-        }).catch(err => {
-            btn.textContent = '复制失败';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.textContent = '复制';
-                btn.classList.remove('copied');
-            }, 2000);
-            console.error('Failed to copy: ', err);
-        });
-    }
-
-
-    
-function previewShortcodeFromInput() {
-    console.log("[DEBUG] 点击了短链预览按钮");
-    const input = document.getElementById("popup-url-input").value.trim();
-    let shortcode = "";
-
-    const matchUnderscore = input.match(/__([A-Za-z0-9]{6})__/);
-    if (matchUnderscore) {
-        shortcode = matchUnderscore[1];
-    } else if (/^[A-Za-z0-9]{6}$/.test(input)) {
-        shortcode = input;
-    } else {
-        const matchLink = input.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]{6})/);
-        if (matchLink) shortcode = matchLink[1];
-    }
-
-    if (shortcode) {
-        let previewURL = `https://slink.bigovideo.tv/${shortcode}`;
-
-        // ✅ 拼接参数逻辑（反向条件）
-        if (!previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
-            previewURL += (previewURL.includes('?') ? '&' : '?') + 'livelive=1&debug=true&eruda=true?testuid=1600007163';
-            console.log('🔧 已拼接调试参数（短链预览输入）：', previewURL);
-        } else {
-            console.log('✅ 检测到指定活动页短链输入，不拼接参数：', previewURL);
-        }
-
-        supabase
-          .from('shortlink_logs')
-          .insert([{ shortcode: shortcode, preview_url: previewURL }])
-          .then(({ data, error }) => {
-              if (error) console.error("❌ Supabase 插入失败：", error);
-              else console.log("✅ Supabase 插入成功：", data);
-          });
-
-        const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
-        const previewHTML = `
-            🔍 预览链接：<a href="${previewURL}" target="_blank">${previewURL}</a><br>
-            ${formattedAdname}
-        `;
-        document.getElementById("preview-iframe").src = previewURL;
-        document.getElementById("popup-result").innerHTML = previewHTML;
-        document.getElementById("copy-adname-btn").style.display = "inline-block";
-    } else {
-        alert("❌ 无法识别 shortlink code，请输入 __code__ 或 6位code 或 短链链接");
-    }
-}
-    
-    window.addEventListener('resize', function () {
-        const previewIframe = document.getElementById('preview-iframe');
-        if (window.innerWidth < 768) {
-            previewIframe.style.height = '45vh';
-        } else {
-            previewIframe.style.height = '70vh';
-        }
-    });
-
-    window.addEventListener('DOMContentLoaded', function () {
-    const openBtn = document.getElementById("open-popup");
-    const closeBtn = document.getElementById("close-popup");
-    const sidePopup = document.getElementById("side-popup");
-
-    if (openBtn && closeBtn && sidePopup) {
-        openBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            // 👉 直接打开弹窗，不再做登录检查
-            sidePopup.style.display = "block";
-        });
-
-        closeBtn.addEventListener("click", function () {
-            sidePopup.style.display = "none";
-        });
-    } else {
-        console.warn("[❌] 弹窗相关元素未正确加载");
-    }
-});
-    window.addEventListener('DOMContentLoaded', () => {
-  const target = document.getElementById('open-popup');
-  const spotlightKey = 'spotlight_shown';
-
-  if (!localStorage.getItem(spotlightKey) && target) {
-    target.classList.add('spotlight-effect');
-    localStorage.setItem(spotlightKey, 'true');
-
-    // 可选：10秒后移除 class，保持干净
-    setTimeout(() => {
-      target.classList.remove('spotlight-effect');
-    }, 10000);
-  }
-});
-      function showSpotlight() {
-    document.body.classList.add('show-spotlight');
-    
-    const el = document.getElementById('open-popup'); // 想抖的元素
-    el.classList.add('shake');
-    
-    // 0.4s 后移除 shake 类，允许下次再触发
-    setTimeout(() => el.classList.remove('shake'), 400);
-  }
-
-  let count = localStorage.getItem('spotlightShown') || 0;
-  count = parseInt(count);
-
-  if (count < 3) {
-    showSpotlight();
-    localStorage.setItem('spotlightShown', count + 1);
-  }
-
 </script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
