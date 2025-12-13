@@ -3,6 +3,7 @@ import { Settings, Copy, Smartphone, MessageSquareWarning, Wand2 } from 'lucide-
 import { logConversion } from './services/supabaseClient';
 import AnnouncementBox from './components/AnnouncementBox';
 import SidebarPopup from './components/SidebarPopup';
+import { ShortlinkCard } from './components/ShortlinkCard'
 
 function App() {
   // --- Global State ---
@@ -146,7 +147,7 @@ function App() {
                       onClick={() => setIsSidebarOpen(true)}
                     >
                         <div className="absolute inset-0 bg-gradient-to-tr from-ocean-400 to-aqua-400 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                        <img src="rosedino.gif" alt="Shortlink Tools" className="w-20 h-20 relative z-10 object-contain drop-shadow-md" />
+                        <ShortlinkCard />
                         <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-ocean-600 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap bg-white px-2 py-0.5 rounded-full shadow-sm ring-1 ring-ocean-100">
                             ✨ Open Shortlink
                         </span>
