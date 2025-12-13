@@ -87,10 +87,10 @@ const SidebarPopup: React.FC<SidebarPopupProps> = ({ isOpen, onClose, onPreview,
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop - Removed blur and made transparent */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-50 transition-opacity"
+          className="fixed inset-0 bg-transparent z-50 transition-opacity"
           onClick={onClose}
         />
       )}
