@@ -128,7 +128,7 @@ function App() {
             Bigo Deeplink Pro
           </span>
         </h1>
-        <p className="text-slate-500 text-lg font-medium tracking-wide opacity-80">Operations Tool Suite</p>
+        <p className="text-slate-500 text-lg font-medium tracking-wide opacity-80">Ad Deep Link Tool Suite</p>
       </div>
 
       {/* Main Content Area */}
