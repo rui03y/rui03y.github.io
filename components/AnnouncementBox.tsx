@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
-import { X, Minus, Sparkles } from 'lucide-react';
+import { X, Minus, Sparkles, ChevronRight } from 'lucide-react';
 
 interface Announcement {
   id: number;
@@ -39,12 +39,19 @@ const AnnouncementBox: React.FC = () => {
     if (collapsed) setIsOpen(false);
   }, []);
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-    localStorage.setItem('announcement_read', '1');
+  const handleToggle = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const newState = !isOpen;
+    setIsOpen(newState);
+    if (!newState) {
+        localStorage.setItem('announcement_read', '1');
+    } else {
+        localStorage.removeItem('announcement_read');
+    }
   };
 
-  const handleClose = () => {
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsVisible(false);
     localStorage.setItem('announcement_hidden', '1');
   };
@@ -53,23 +60,30 @@ const AnnouncementBox: React.FC = () => {
 
   return (
     <div 
-      className={`fixed top-24 right-6 w-80 z-40 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform ${isOpen ? 'translate-x-0' : 'translate-x-[calc(100%-3rem)]'} hidden lg:block`}
+      className={`fixed top-24 right-6 w-80 z-40 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isOpen ? 'translate-x-0' : 'translate-x-[calc(100%-3.5rem)]'} hidden lg:block`}
     >
-      <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/60 overflow-hidden ring-1 ring-ocean-100">
+      <div 
+        className={`bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/60 overflow-hidden ring-1 ring-ocean-100 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-90 hover:opacity-100'}`}
+      >
         
-        {/* Header */}
-        <div className="bg-gradient-to-r from-ocean-500 to-aqua-400 p-4 flex justify-between items-center text-white relative overflow-hidden">
+        {/* Header - Clickable to toggle state */}
+        <div 
+            onClick={() => !isOpen && setIsOpen(true)}
+            className={`bg-gradient-to-r from-ocean-500 to-aqua-400 p-4 flex justify-between items-center text-white relative overflow-hidden ${!isOpen ? 'cursor-pointer' : ''}`}
+            title={!isOpen ? "Click to expand" : ""}
+        >
           <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-8 -mt-8 blur-2xl"></div>
           
-          <div className="flex items-center gap-2 font-bold text-sm z-10">
-            <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
+          <div className="flex items-center gap-2 font-bold text-sm z-10 min-w-0">
+            <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm shrink-0">
                 <Sparkles size={14} className="text-white" />
             </div>
-            <span className="tracking-wide text-shadow-sm">What's New</span>
+            <span className={`tracking-wide text-shadow-sm whitespace-nowrap transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>What's New</span>
           </div>
-          <div className="flex gap-2 z-10">
+          
+          <div className="flex gap-2 z-10 shrink-0">
             <button onClick={handleToggle} className="hover:bg-black/10 p-1.5 rounded-full transition-colors text-white/90">
-              <Minus size={14} />
+              {isOpen ? <Minus size={14} /> : <ChevronRight size={14} />}
             </button>
             <button onClick={handleClose} className="hover:bg-black/10 p-1.5 rounded-full transition-colors text-white/90">
               <X size={14} />
