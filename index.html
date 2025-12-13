@@ -585,43 +585,71 @@ function showFloatingMessage(message, isError = false) {
     .then(response => response.json())
     .then(data => {
         const resultBox = document.getElementById("popup-result");
-        if (data.shortlink) {
-            const match = data.shortlink.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
+
+        console.log("返回数据：", data);
+
+        // 🔥 正确解析接口返回结构
+        if (
+            data.code === 0 &&
+            data.data &&
+            data.data.row &&
+            data.data.row.length > 0
+        ) {
+            const row = data.data.row[0];
+
+            const shortUrl = row.shortUrl;
+            const deeplink = row.deeplink;
+
+            // 🔥 正确提取短码
+            const match = shortUrl.match(/slink\.bigovideo\.tv\/([A-Za-z0-9]+)/);
             const shortcode = match && match[1] ? match[1] : '';
 
-            const formattedShortlink = `✅ 短链：<a href="${data.shortlink}" target="_blank">${data.shortlink}</a>`;
-            const formattedAdname = `📣 广告信息拼接用：<span style="font-weight:bold;">__${shortcode}__</span>`;
-            resultBox.innerHTML = `${formattedShortlink}<br>${formattedAdname}`;
+            // 显示短链 + 广告名
+            resultBox.innerHTML = `
+                ✅ 短链：<a href="${shortUrl}" target="_blank">${shortUrl}</a><br>
+                📣 广告信息拼接用：<b>__${shortcode}__</b>
+            `;
 
-            // ✅ 拼接参数逻辑（反向条件）
-            let previewURL = data.shortlink;
-            if (!previewURL.includes('https://activity.bigo.tv/live/act/act_16907/index.html?')) {
-                previewURL += (previewURL.includes('?') ? '&' : '?') + 'livelive=1&debug=true&eruda=true?testuid=1600007163';
-                console.log('🔧 已拼接调试参数（短链预览）：', previewURL);
-            } else {
-                console.log('✅ 检测到指定活动页短链，不拼接参数：', previewURL);
+            // 🔥 iframe 预览逻辑
+            let previewURL = shortUrl;
+            if (!previewURL.includes('?')) {
+                previewURL += '?livelive=1&debug=true&eruda=true?testuid=1600007163';
             }
-
             document.getElementById("preview-iframe").src = previewURL;
 
-            // ✅ Supabase 记录
-            supabase.from('shortlink_logs')
-              .insert([{ shortcode: shortcode, preview_url: previewURL, url: url }])
-              .then(({ data, error }) => {
-                  if (error) console.error("❌ Supabase 插入失败 (生成短链)：", error);
-                  else console.log("✅ Supabase 插入成功 (生成短链)：", data);
-              });
-
+            // 🔥 让按钮出现
             document.getElementById("copy-shortlink-btn").style.display = "inline-block";
             document.getElementById("copy-adname-btn").style.display = "inline-block";
+
+            // -----------------------------------------------------
+            // 🔥 保留 Supabase 插入日志 —— 已修复字段并可正常写入
+            // -----------------------------------------------------
+            supabase
+                .from('shortlink_logs')
+                .insert([
+                    {
+                        shortcode: shortcode,
+                        preview_url: previewURL,
+                        url: url
+                    }
+                ])
+                .then(({ data, error }) => {
+                    if (error) {
+                        console.error("❌ Supabase 插入失败：", error);
+                    } else {
+                        console.log("✅ Supabase 插入成功：", data);
+                    }
+                });
+
         } else {
-            resultBox.innerHTML = `❌ 生成失败：${data.error || "未知错误"}`;
+            resultBox.innerHTML = `❌ 生成失败：接口异常`;
         }
     })
     .catch(error => {
         document.getElementById("popup-result").textContent = "请求失败：" + error;
     });
 }
+
 
 
     function decodeURL() {
