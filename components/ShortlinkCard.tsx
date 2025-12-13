@@ -1,4 +1,4 @@
-import shortlinkGif from '@/assets/resodine.gif'
+import shortlinkGif from '@/assets/rosedino.gif'
 
 export function ShortlinkCard() {
   return (
