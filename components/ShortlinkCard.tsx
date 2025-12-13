@@ -5,7 +5,7 @@ export function ShortlinkCard() {
     <img
       src={shortlinkGif}
       alt="Shortlink Tools"
-      class="w-20 h-20 relative z-10 object-contain drop-shadow-md"
+      class="w-40 h-40 relative z-10 object-contain drop-shadow-md"
     />
   )
 }
