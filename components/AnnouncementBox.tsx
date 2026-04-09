@@ -111,7 +111,7 @@ const AnnouncementBox: React.FC = () => {
           </div>
           
           <div className="p-3 bg-slate-50 border-t border-slate-100 text-center">
-             <span className="text-[10px] text-slate-400 font-medium">✨ Keep your app updated</span>
+             <span className="text-[10px] text-slate-400 font-medium">✨ see u</span>
           </div>
         </div>
       </div>
